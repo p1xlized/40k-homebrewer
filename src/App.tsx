@@ -1,16 +1,10 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import { Button } from './components/ui/button'
+import { RouterProvider } from '@tanstack/react-router';
+import {router} from './router/router';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App = () => {
   return (
-    <>
- <Button>Click me</Button>
-    </>
-  )
-}
+    <RouterProvider router={router} />
+  );
+};
 
-export default App
+export default App;
