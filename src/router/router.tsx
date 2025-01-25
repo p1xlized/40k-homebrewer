@@ -1,55 +1,42 @@
-import {
-  Link,
-  Outlet,
-  createRootRoute,
-  createRoute,
-  createRouter,
-} from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/router-devtools'
+import { createRootRoute, createRoute, createRouter } from '@tanstack/react-router'
+import Root from '../pages/Root'
+import Home from '../pages/Home'
+import Login from '../pages/Login'
+import Editor from '../pages/Editor'
 
+
+// Create root route (layout)
 const rootRoute = createRootRoute({
-  component: () => (
-    <>
-      <div className="p-2 flex gap-2">
-        <Link to="/" className="[&.active]:font-bold">
-          Home
-        </Link>{' '}
-        <Link to="/about" className="[&.active]:font-bold">
-          About
-        </Link>
-      </div>
-      <hr />
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
-  ),
+  component: Root,
 })
+
+// Define individual routes
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
-  component: function Index() {
-    return (
-      <div className="p-2">
-        <h3>Welcome Home!</h3>
-      </div>
-    )
-  },
+  component: Home,
 })
 
-const aboutRoute = createRoute({
+// const aboutRoute = createRoute({
+//   getParentRoute: () => rootRoute,
+//   path: '/about',
+//   component: About,
+// })
+
+const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/about',
-  component: function About() {
-    return <div className="p-2">Hello from About!</div>
-  },
+  path: '/login',
+  component: Login,
 })
 
-const routeTree = rootRoute.addChildren([indexRoute, aboutRoute])
+const editorRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/editor',
+  component: Editor,
+})
 
+// Add routes as children to the root route
+const routeTree = rootRoute.addChildren([indexRoute, loginRoute, editorRoute])
+
+// Create the router
 export const router = createRouter({ routeTree })
-
-declare module '@tanstack/react-router' {
-  interface Register {
-    router: typeof router
-  }
-}
