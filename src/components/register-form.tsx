@@ -13,7 +13,7 @@ import { supabase } from "../config/api"
 import { FormEvent, useState } from "react"
 import { useNavigate } from "@tanstack/react-router"
 import { useAuth } from "../lib/contexts/AuthContext";
-export function LoginForm({
+export function RegisterForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {

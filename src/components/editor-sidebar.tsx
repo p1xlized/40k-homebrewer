@@ -6,6 +6,7 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -13,7 +14,8 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "./ui/sidebar"
+import { ColorPickerComponent } from "./ColorPickerComponent"
 
 // This is sample data.
 const data = {
@@ -156,10 +158,11 @@ const data = {
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function EditorSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
       <SidebarContent>
+        <SidebarHeader><ColorPickerComponent/></SidebarHeader>
         <SidebarGroup>
           <SidebarGroupLabel>Table of Contents</SidebarGroupLabel>
           <SidebarGroupContent>

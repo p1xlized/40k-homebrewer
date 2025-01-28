@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom/client';
 import { StrictMode } from 'react';
 import App from './App';
 import './index.css';
-import { AuthProvider } from './lib/context/AuthContext';
+import { AuthProvider } from './lib/contexts/AuthContext';
 
 const rootElement = document.getElementById('root') as HTMLElement;
 
