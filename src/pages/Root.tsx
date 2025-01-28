@@ -13,18 +13,19 @@ export default function Root() {
   const isNoSidebarPath = noSidebarPaths.includes(currentPath);
 
   return (
-    <SidebarProvider>
+    <>
       {isNoSidebarPath ? (
+
         <Outlet />
       ) : (
-        <>
+        <SidebarProvider>
           <CommunitySideBar />
           <main>
             <SidebarTrigger />
             <Outlet />
           </main>
-        </>
+        </SidebarProvider>
       )}
-    </SidebarProvider>
+    </>
   );
 }
