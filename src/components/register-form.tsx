@@ -6,6 +6,7 @@ import { supabase } from "../config/api"
 import { useState } from "react"
 import loyalist from "../assets/ressources/loyalist.gif"
 import heretic from "../assets/ressources/heretic.gif"
+import { useNavigate } from "@tanstack/react-router"
 
 export function RegisterForm({
   className,
@@ -14,8 +15,8 @@ export function RegisterForm({
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [selectedGif, setSelectedGif] = useState<"loyalist" | "heretic" | null>(null) 
-
+  const [selectedGif, setSelectedGif] = useState<"loyalist" | "heretic" | null>(null)
+  const navigate = useNavigate();
   async function handleRegister() {
     try {
       // Sign up the user
@@ -23,24 +24,25 @@ export function RegisterForm({
         email: email,
         password: password
       });
-  
+
       if (signUpError) throw signUpError; // Handle sign-up errors
-  
+
       // Insert into the "profiles" table
       const { error: profileInsertError } = await supabase.from("profiles").insert({
-        auth_id: data.user!.id!, 
+        auth_id: data.user!.id!,
         username: username,
         favorite_faction: selectedGif
       });
-  
+
       if (profileInsertError) throw profileInsertError; // Handle profile insertion errors
-  
+
       console.log("User registered with GIF selection:", selectedGif);
-    } catch (err) {
+      navigate({ to: '/login' })
+    } catch (err: any) {
       console.error("Registration failed:", err.message);
     }
   }
-  
+
 
   console.log(username, email, password, selectedGif)
 
@@ -54,6 +56,7 @@ export function RegisterForm({
       {...props}
     >
       <div className="flex flex-col items-center gap-2 text-center">
+        <h2 className="text-balance text-sm text-muted-foregroun">Register</h2>
         <p className="text-balance text-sm text-muted-foreground">
           Enter your information below to register to your account
         </p>
@@ -84,6 +87,10 @@ export function RegisterForm({
               setEmail(e.target.value)
             }
           />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="picture">Picture</Label>
+          <Input id="picture" type="file" />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="password">Password</Label>

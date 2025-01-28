@@ -13,6 +13,7 @@ import { supabase } from "../config/api"
 import { FormEvent, useState } from "react"
 import { useNavigate } from "@tanstack/react-router"
 import { useAuth } from "../lib/contexts/AuthContext";
+
 export function LoginForm({
   className,
   ...props
@@ -26,20 +27,31 @@ export function LoginForm({
 
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     setLoading(true);
-
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-
       if (error) {
         alert(error.message || 'An unexpected error occurred');
       } else if (data.session) {
-        login(data.session.user);
-        navigate({ to: '/' });
+        const { data: profile, error: profileError } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('auth_id', data.session.user.id)
+          .single();
+        if (profileError) {
+          alert('Error fetching profile: ' + profileError.message);
+        } else {
+          const combinedData = {
+            ...data.session.user,
+            ...profile,
+          };
+  
+          login(combinedData); 
+          navigate({ to: '/' });
+        }
       }
     } catch (err) {
       console.error('Unexpected error during login:', err);
@@ -47,7 +59,6 @@ export function LoginForm({
       setLoading(false);
     }
   };
-
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>

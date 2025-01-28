@@ -1,6 +1,6 @@
 import { GalleryVerticalEnd } from "lucide-react"
 import { LoginForm } from "../components/login-form"
-import Logo from "../assets/logo.png"  // Import the logo image
+import Logo from "../assets/branding/logo.png"  // Import the logo image
 
 export default function LoginPage() {
   return (
