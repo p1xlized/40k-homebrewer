@@ -6,6 +6,7 @@ import Editor from '../pages/Editor'
 import Profile from '../pages/Profile'
 import ProtectedRoute from '../router/Protected'
 import Register from '../pages/Register'
+import Collections from '../pages/Collections'
 
 
 // Create root route (layout)
@@ -53,8 +54,18 @@ const profileRoute = createRoute({
     </ProtectedRoute>
   ),
 })
+
+const collectionRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/collections',
+  component: () => (
+    <ProtectedRoute>
+      <Collections />
+    </ProtectedRoute>
+  ),
+})
 // Add routes as children to the root route
-const routeTree = rootRoute.addChildren([indexRoute, loginRoute, registerRoute, editorRoute, profileRoute])
+const routeTree = rootRoute.addChildren([indexRoute, loginRoute, registerRoute, editorRoute, profileRoute, collectionRoute])
 
 // Create the router
 export const router = createRouter({ routeTree })

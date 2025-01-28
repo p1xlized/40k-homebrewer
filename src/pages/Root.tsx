@@ -7,7 +7,7 @@ export default function Root() {
   const currentPath = router.state.location.pathname;
 
   // Define paths where only the Outlet should render
-  const noSidebarPaths = ['/login', '/register', '/editor'];
+  const noSidebarPaths = ['/login', '/register', '/editor', '/collections'];
 
   // Check if the current path is in the noSidebarPaths
   const isNoSidebarPath = noSidebarPaths.includes(currentPath);
