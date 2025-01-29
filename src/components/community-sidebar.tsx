@@ -65,7 +65,7 @@ export function CommunitySideBar() {
   
     console.log(user);
   return (
-    <Sidebar>
+    <Sidebar variant="floating">
       <SidebarContent>
         <SidebarHeader>
 

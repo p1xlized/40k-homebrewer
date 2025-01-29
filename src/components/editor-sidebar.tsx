@@ -160,7 +160,7 @@ const data = {
 
 export function EditorSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar {...props}>
+    <Sidebar {...props} variant="floating">
       <SidebarContent>
         <SidebarHeader><ColorPickerComponent/></SidebarHeader>
         <SidebarGroup>

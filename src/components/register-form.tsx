@@ -42,10 +42,7 @@ export function RegisterForm({
       console.error("Registration failed:", err.message);
     }
   }
-
-
   console.log(username, email, password, selectedGif)
-
   return (
     <form
       className={cn("flex flex-col gap-6", className)}
@@ -143,10 +140,10 @@ export function RegisterForm({
         </Button>
       </div>
       <div className="text-center text-sm">
-        Don&apos;t have an account?{" "}
-        <a href="#" className="underline underline-offset-4">
-          Sign up
-        </a>
+        Already registered?{" "}
+        <Button variant="link" className="" onClick={() => navigate({ to: '/login' })}>
+          Login
+        </Button>
       </div>
     </form>
   )
