@@ -5,11 +5,7 @@ import { CommunitySideBar } from '../components/community-sidebar';
 export default function Root() {
   const router = useRouter();
   const currentPath = router.state.location.pathname;
-
-  // Define paths where only the Outlet should render
   const noSidebarPaths = ['/login', '/register', '/editor', '/collections'];
-
-  // Check if the current path is in the noSidebarPaths
   const isNoSidebarPath = noSidebarPaths.includes(currentPath);
 
   return (

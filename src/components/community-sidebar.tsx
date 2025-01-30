@@ -18,23 +18,19 @@ import { useNavigate } from "@tanstack/react-router"
 import { useAuth } from "../lib/contexts/AuthContext"
 import { supabase } from "../config/api"
 import { Button } from "./ui/button"
+import Editor from "../pages/Editor"
 
 // Menu items.
 const items = [
   {
-    title: "Home",
-    url: "#",
-    icon: Home,
+    title: "Editor",
+    url: "/collections",
+    icon: Editor,
   },
   {
     title: "Inbox",
     url: "#",
     icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
   },
   {
     title: "Search",
@@ -76,10 +72,10 @@ export function CommunitySideBar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Button variant="link" onClick={()=> navigate({to: item.url})}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Button>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
