@@ -7,6 +7,7 @@ import Profile from '../pages/Profile'
 import ProtectedRoute from '../router/Protected'
 import Register from '../pages/Register'
 import Collections from '../pages/Collections'
+import SideBarPage from '../pages/SideBarPage'
 
 
 // Create root route (layout)
@@ -18,7 +19,7 @@ const rootRoute = createRootRoute({
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
-  component: Home,
+  component: () => <SideBarPage><Home /></SideBarPage>,
 })
 
 // const aboutRoute = createRoute({
