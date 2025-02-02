@@ -68,57 +68,8 @@ const Collections = () => {
     }, [currentUser]);
     console.log(data)
     return (
-
-        <div className="flex flex-1 flex-col gap-4 p-4">
-            <div className="grid auto-rows-min gap-2 md:grid-cols-3">
-                <div className="flex justify-start items-center " >
-                    <Avatar>
-                        <AvatarImage src={currentUser.picture_url} className="h-8 w-8 rounded-full" />
-                        <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                    <p className="leading-7 [&:not(:first-child)]:ml-4">{user.username}</p>
-                </div>
-                <div className=" rounded-xl flex justify-center" >
-                    <NavigationMenu>
-                        <NavigationMenuList>
-                            <NavigationMenuItem>
-                                <NavigationMenuTrigger>Item One</NavigationMenuTrigger>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <NavigationMenuTrigger>Item One</NavigationMenuTrigger>
-                                <NavigationMenuContent>
-                                    <NavigationMenuLink>Link</NavigationMenuLink>
-                                </NavigationMenuContent>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                    Documentation
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
-                        </NavigationMenuList>
-                    </NavigationMenu>
-                </div>
-                <div className="rounded-xl flex justify-end">
-                    <Sheet >
-                        <SheetTrigger><Button className="mr-4"><CirclePlus /></Button></SheetTrigger>
-                        <SheetContent side="bottom">
-                            <SheetHeader>
-                                <SheetTitle>Create a custom chapter</SheetTitle>
-                                <SheetDescription>
-                                    <ChapterForm handleSaveButton={createChapter} />
-                                </SheetDescription>
-                            </SheetHeader>
-                        </SheetContent>
-                    </Sheet>
-
-                    <Button onClick={() => navigate({ to: '/' })} variant="outline"><LogOut /></Button>
-
-                </div>
-            </div>
-
-
-            <div className="aspect-video rounded-xl bg-muted/50 h-full">
-                <div className="grid grid-cols-4 gap-4 p-4 m-2">
+        <>
+            <div className="grid grid-cols-4 gap-4 p-4 m-2">
                 {data.map((chapter: any) => (
                     <StackedCollectionCard
                         key={chapter.id}
@@ -127,10 +78,8 @@ const Collections = () => {
                     />
                 ))}
 
-                </div>
-
             </div>
-        </div>
+        </>
     )
 }
 
