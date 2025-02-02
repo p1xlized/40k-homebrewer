@@ -1,38 +1,35 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { motion } from "framer-motion";
-import { CardFooter } from "./ui/card";
-
-export function StackedCollectionCard({
-  name,
-  geneSeed,
-  imageUrl,
-}: {
+import React from "react";
+import { Card, CardContent } from "../components/ui/card";
+import folder from "../assets/ressources/folder.png";
+interface ChapterCardProps {
   name: string;
-  geneSeed: string;
-  imageUrl?: string;
-}) {
-  return (
-    <div className="relative w-64 h-48 group"> {/* Added group for hover effect */}
-    
-
-      {/* Foreground (Main Card) */}
-      <motion.div whileHover={{ y: -5 }} className="absolute inset-0 z-10">
-        <Card className="relative w-full h-full shadow-lg rounded-xl">
-          {/* Image Section (background image with blur effect) */}
-          <div
-            className="absolute inset-0 bg-cover bg-center rounded-t-xl transition-all duration-300 group-hover:filter-none filter blur-sm rounded-xl" 
-            style={{
-              backgroundImage: `url(${imageUrl || "https://cdn.mos.cms.futurecdn.net/BGBWW5VsRVjrPUT4QxjMDB-650-80.jpg.webp"})`,
-              height: "100%", // Adjust based on your preference
-            }}
-          />
-          
-          <CardFooter className="relative z-10">
-            <p className="text-x text-gray-200">{name}</p>
-            <p className="text-sm text-gray-200">Gene Seed: {geneSeed}</p>
-          </CardFooter>
-        </Card>
-      </motion.div>
-    </div>
-  );
+  image: string;
+  onClick: () => void;
 }
+
+
+const ChapterCard: React.FC<ChapterCardProps> = ({ name, image, onClick }) => {
+  console.log(image)
+  return (
+    <Card onClick={onClick} className="cursor-pointer w-72 bg-muted/50 p-3 hover:bg-muted transition flex flex-col items-center border border-muted">
+      <CardContent className="relative w-64 h-64 rounded-lg overflow-hidden ">
+        {/* Custom Folder SVG */}
+        {folder ? (
+          <img src={folder} alt="Folder Icon" className="absolute inset-0 w-full h-full " />
+        ) : (
+          <svg className="absolute inset-0 w-full h-full opacity-50 text-primary" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M10 4H2V20H22V6H12L10 4Z" />
+          </svg>
+        )}
+
+
+        {/* <img src={image} alt="Preview" className="absolute inset-0 w-20 h-20 object-cover rounded-sm" /> */}
+      </CardContent>
+
+      {/* Folder Name */}
+      <p className="mt-2 text-sm font-medium text-center">{name}</p>
+    </Card>
+  );
+};
+
+export default ChapterCard;

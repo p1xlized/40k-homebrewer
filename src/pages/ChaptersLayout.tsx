@@ -64,7 +64,7 @@ const ChaptersLayout = () => {
                         </NavigationMenuList>
                     </NavigationMenu>
                 </div>
-                <div className="rounded-xl flex justify-end">
+                <div className="rounded-xl flex justify-end items-center">
                     <Sheet >
                         <SheetTrigger><Button className="mr-4"><CirclePlus /></Button></SheetTrigger>
                         <SheetContent side="bottom">
@@ -77,7 +77,7 @@ const ChaptersLayout = () => {
                         </SheetContent>
                     </Sheet>
 
-                    <Button onClick={() => navigate({ to: '/' })} variant="outline"><LogOut /></Button>
+                    <Button onClick={() => navigate({ to: '/' })} ><LogOut /></Button>
 
                 </div>
             </div>

@@ -1,14 +1,9 @@
 import { useAuth } from "../lib/contexts/AuthContext"
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
-import { Button } from "../components/ui/button"
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "../components/ui/navigation-menu"
 import { useNavigate } from "@tanstack/react-router"
-import { LogOut, CirclePlus } from "lucide-react"
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../components/ui/sheet"
-import { ChapterForm } from "../components/chapter-form"
 import { supabase } from "../config/api"
 import { useEffect, useState } from "react"
-import { StackedCollectionCard } from "../components/chapters-card"
+import ChapterCard from "../components/chapters-card"
 
 
 const Collections = () => {
@@ -34,24 +29,7 @@ const Collections = () => {
             return [];
         }
     }
-    async function createChapter(name: string, gene_seed: string) {
-        if (!currentUser || !currentUser.id) {
-            console.error("User not authenticated or missing ID.");
-            return;
-        }
 
-        try {
-            const { data, error } = await supabase
-                .from("chapters")
-                .insert([{ name, gene_seed, user_id: currentUser.id }])
-
-            if (error) throw error;
-
-            console.log("Chapter created:", data);
-        } catch (error) {
-            console.error("Error creating chapter:", error);
-        }
-    }
 
     useEffect(() => {
         async function fetchChapters() {
@@ -71,10 +49,11 @@ const Collections = () => {
         <>
             <div className="grid grid-cols-4 gap-4 p-4 m-2">
                 {data.map((chapter: any) => (
-                    <StackedCollectionCard
+                    <ChapterCard
                         key={chapter.id}
                         name={chapter.name}
-                        geneSeed={chapter.gene_seed}
+                        image={"https://warhammer40000.com/wp-content/uploads/2023/07/WszHntPDLhdxl7VK.png"}
+                        onClick={() => navigate({ to: `/chapters/${chapter.chapter_id}` })}
                     />
                 ))}
 

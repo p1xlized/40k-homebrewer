@@ -1,5 +1,5 @@
 import { RegisterForm } from "../components/register-form";
-import registerBackground from "../assets/ressources/register-background.png";
+import registerBackground from "../assets/ressources/register-background.jpg";
 
 export default function RegisterPage() {
   return (
