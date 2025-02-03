@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
 import { useNavigate } from "@tanstack/react-router"
 import { supabase } from "../config/api"
 import { useEffect, useState } from "react"
-import ChapterCard from "../components/chapters-card"
+import ChapterCard from "../components/chapters-folder"
 
 
 const Collections = () => {
