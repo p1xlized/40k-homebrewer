@@ -6,6 +6,7 @@ interface MarineCardProps {
     onClick?:() => void,
     role: string,
     icon: React.ReactNode
+    
 }
 const MarineCard: React.FC<MarineCardProps> = ({ onClick, role, icon }) => {
   return (

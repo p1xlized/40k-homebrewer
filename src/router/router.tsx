@@ -3,13 +3,13 @@ import Root from '../pages/Root'
 import Home from '../pages/Home'
 import Login from '../pages/Login'
 import Editor from '../pages/Editor'
-import Profile from '../pages/Profile'
 import ProtectedRoute from '../router/Protected'
 import Register from '../pages/Register'
 import Collections from '../pages/ChaptersList'
 import SideBarPage from '../pages/SideBarPage'
 import ChapterDetails from '../pages/ChapterDetails'
-import ChaptersLayout from '../pages/ChaptersLayout'
+import AppLayout from '../pages/AppLayout'
+import Profile from '../pages/Profile'
 
 
 // Create root route (layout)
@@ -24,11 +24,6 @@ const indexRoute = createRoute({
   component: () => <SideBarPage><Home /></SideBarPage>,
 })
 
-// const aboutRoute = createRoute({
-//   getParentRoute: () => rootRoute,
-//   path: '/about',
-//   component: About,
-// })
 
 const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -48,56 +43,32 @@ const editorRoute = createRoute({
   component: Editor,
 })
 
-const profileRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/profile',
-  component: () => (
-    <ProtectedRoute>
-      <Profile />
-    </ProtectedRoute>
-  ),
-})
 
-// const chaptersRoute = createRoute({
-//   getParentRoute: () => rootRoute,
-//   path: '/chapters',
-//   component: () => (
-//     <ProtectedRoute>
-//       <Collections />
-//     </ProtectedRoute>
-//   ),
-// })
-// const detailsChapterRoute = createRoute({
-//   getParentRoute: () => rootRoute,
-//   path: '/chapters/$id',
-//   component: () => (
-//     <ProtectedRoute>
-//       <ChapterDetails />
-//     </ProtectedRoute>
-//   ),
-// })
-
-// Chapters Layout and its children
 const chaptersLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/chapters',
-  component: ChaptersLayout, // See ChaptersLayout.tsx above
+  path: '/app',
+  component: AppLayout, 
 });
 
 const chaptersListRoute = createRoute({
   getParentRoute: () => chaptersLayoutRoute,
-  path: '/', 
+  path: '/chapters', 
   component: Collections,
 });
 
 const detailsChapterRoute = createRoute({
   getParentRoute: () => chaptersLayoutRoute,
-  path: '$id', 
+  path: '/chapters/$id', 
   component: ChapterDetails,
+});
+const profileRoute = createRoute({
+  getParentRoute: () => chaptersLayoutRoute,
+  path: '/profile/$id', 
+  component: Profile,
 });
 /**
  * RouteTree + Create Router, define routes on top and then add them here to routeTree
  * @author P1xlized
  */
-const routeTree = rootRoute.addChildren([indexRoute, loginRoute, registerRoute, editorRoute, profileRoute,  chaptersLayoutRoute.addChildren([chaptersListRoute, detailsChapterRoute])])
+const routeTree = rootRoute.addChildren([indexRoute, loginRoute, registerRoute, editorRoute,chaptersLayoutRoute.addChildren([chaptersListRoute, detailsChapterRoute, profileRoute])])
 export const router = createRouter({ routeTree })

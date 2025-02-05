@@ -8,32 +8,32 @@ import { useAuth } from '../lib/contexts/AuthContext';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '../components/ui/sheet';
 import { ChapterForm } from '../components/chapter-form';
 import { Button } from '../components/ui/button';
-import { CirclePlus, LogOut } from 'lucide-react';
+import { CirclePlus, LogOut, Settings } from 'lucide-react';
 import { supabase } from '../config/api';
 
-const ChaptersLayout = () => {
+const AppLayout = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
     const currentUser = user
 
-        async function createChapter(name: string, gene_seed: string) {
-            if (!currentUser || !currentUser.id) {
-                console.error("User not authenticated or missing ID.");
-                return;
-            }
-    
-            try {
-                const { data, error } = await supabase
-                    .from("chapters")
-                    .insert([{ name, gene_seed, user_id: currentUser.id }])
-    
-                if (error) throw error;
-    
-                console.log("Chapter created:", data);
-            } catch (error) {
-                console.error("Error creating chapter:", error);
-            }
+    async function createChapter(name: string, gene_seed: string) {
+        if (!currentUser || !currentUser.id) {
+            console.error("User not authenticated or missing ID.");
+            return;
         }
+
+        try {
+            const { data, error } = await supabase
+                .from("chapters")
+                .insert([{ name, gene_seed, user_id: currentUser.id }])
+
+            if (error) throw error;
+
+            console.log("Chapter created:", data);
+        } catch (error) {
+            console.error("Error creating chapter:", error);
+        }
+    }
     return (
         <div className="flex flex-1 flex-col gap-4 p-4">
             <div className="grid auto-rows-min gap-2 md:grid-cols-3">
@@ -48,17 +48,13 @@ const ChaptersLayout = () => {
                     <NavigationMenu>
                         <NavigationMenuList>
                             <NavigationMenuItem>
-                                <NavigationMenuTrigger>Item One</NavigationMenuTrigger>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <NavigationMenuTrigger>Item One</NavigationMenuTrigger>
-                                <NavigationMenuContent>
-                                    <NavigationMenuLink>Link</NavigationMenuLink>
-                                </NavigationMenuContent>
+                                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                    Lexicarium
+                                </NavigationMenuLink>
                             </NavigationMenuItem>
                             <NavigationMenuItem>
                                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                    Documentation
+                                    Inquisition
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
                         </NavigationMenuList>
@@ -66,7 +62,7 @@ const ChaptersLayout = () => {
                 </div>
                 <div className="rounded-xl flex justify-end items-center">
                     <Sheet >
-                        <SheetTrigger><Button className="mr-4"><CirclePlus /></Button></SheetTrigger>
+                        <SheetTrigger><Button variant="secondary" className="mr-4"><CirclePlus /></Button></SheetTrigger>
                         <SheetContent side="bottom">
                             <SheetHeader>
                                 <SheetTitle>Create a custom chapter</SheetTitle>
@@ -77,7 +73,7 @@ const ChaptersLayout = () => {
                         </SheetContent>
                     </Sheet>
 
-                    <Button onClick={() => navigate({ to: '/' })} ><LogOut /></Button>
+                    <Button variant="secondary" onClick={() => navigate({ to: '/' })} ><Settings /></Button>
 
                 </div>
             </div>
@@ -93,4 +89,4 @@ const ChaptersLayout = () => {
 
 };
 
-export default ChaptersLayout;
+export default AppLayout;

@@ -53,7 +53,7 @@ const Collections = () => {
                         key={chapter.id}
                         name={chapter.name}
                         image={"https://warhammer40000.com/wp-content/uploads/2023/07/WszHntPDLhdxl7VK.png"}
-                        onClick={() => navigate({ to: `/chapters/${chapter.chapter_id}` })}
+                        onClick={() => navigate({ to: `/app/chapters/${chapter.chapter_id}` })}
                     />
                 ))}
 

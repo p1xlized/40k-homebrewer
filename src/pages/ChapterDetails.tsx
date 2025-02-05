@@ -3,9 +3,12 @@ import { supabase } from "../config/api";
 import { useEffect, useState } from "react";
 import Loader from "../assets/ressources/loader.gif";
 import { Badge } from "../components/ui/badge";
-import { CalendarRange, Dna, Eclipse,  } from "lucide-react";
-import { Shield, Cross, Star, Cog,ShieldPlus, Book, Sword, Home } from "lucide-react";
+import { CalendarRange, Dna, Eclipse, Edit2, } from "lucide-react";
+import { Shield, Cross, Star, Cog, ShieldPlus, Book, Sword, Home } from "lucide-react";
 import MarineCard from "../components/marine-card";
+import DetailsInfo from "../components/datails-info";
+import DetailsEdit from "../components/datails-edit";
+import { Button } from "../components/ui/button";
 interface Chapter {
     created_at: string;
     lore: string | null;
@@ -23,20 +26,21 @@ interface Chapter {
 }
 
 const ChapterDetails = () => {
-    const params = useParams({ from: '/chapters/$id' })
+    const params = useParams({ from: '/app/chapters/$id' })
     const [chapter, setChapter] = useState<Chapter | null>(null);
     const [loading, setLoading] = useState(true);
+    const [editMode, setEditMode] = useState(false);
     const navigate = useNavigate()
-const roles = [
-    { name: "Chapter Master", icon: Shield },
-    { name: "Chaplain", icon: Cross },
-    { name: "Veteran", icon: Star },
-    { name: "Techmarine", icon: Cog },
-    { name: "Apothecary", icon: ShieldPlus },
-    { name: "Librarian", icon: Book },
-    { name: "Captain", icon: Sword },
-    { name: "Base", icon: Home }
-  ];
+    const roles = [
+        { name: "Chapter Master", icon: Shield },
+        { name: "Chaplain", icon: Cross },
+        { name: "Veteran", icon: Star },
+        { name: "Techmarine", icon: Cog },
+        { name: "Apothecary", icon: ShieldPlus },
+        { name: "Librarian", icon: Book },
+        { name: "Captain", icon: Sword },
+        { name: "Base", icon: Home }
+    ];
     async function fetchChapterData() {
         try {
             const { data, error } = await supabase
@@ -52,7 +56,7 @@ const roles = [
             console.error("Error fetching chapter:", error);
             setChapter(null);
         } finally {
-            setLoading(false); // Set loading to false after data is fetched or error occurs
+            setLoading(false);
         }
     }
 
@@ -60,7 +64,7 @@ const roles = [
         if (params.id) {
             setTimeout(() => {
                 fetchChapterData();
-            }, 4000); 
+            }, 4000);
         }
     }, [params.id]);
 
@@ -79,52 +83,44 @@ const roles = [
     return (
 
         <div className="flex p-4 h-screen">
-            <div className="w-1/4 min-w-[40vh] h-full bg-background rounded-xl p-4">
+            <div className="relative w-1/4 min-w-[40vh] h-full bg-background rounded-xl p-4">
+                {/* Button inside the div, positioned top-left */}
+                <Button
+                    variant="outline"
+                    size="icon"
+                    className="absolute top-2 right-2 z-10"
+                    onClick={() => setEditMode(!editMode)}
+                >
+                    <Edit2 />
+                </Button>
 
-                <div className="grid auto-rows-min gap-2 md:grid-cols-2">
-                    <div className="rounded-xl">
-                        <img
-                            src={chapter.chapter_barge}
-                            alt="Chapter Barge"
-                            className="w-48 h-48 object-cover rounded-full"
-                        />
-                    </div>
-                    <div className="aspect-video rounded-xl" >
-                        <h4 className="text-xl font-bold mt-2">{chapter.name}</h4>
-
-                    </div>
-                </div>
-                <div className="grid auto-rows-min gap-4 md:grid-cols-3 mt-4">
-                    <Badge className="gap-1">
-                        <CalendarRange size={16} />
-                        {chapter.founding}
-                    </Badge>
-                    <Badge className="gap-1">
-                        <Eclipse size={16} />
-                        {chapter.homeworld}
-                    </Badge>
-                    <Badge className="gap-1">
-                        <Dna size={16} />
-                        {chapter.gene_seed}
-                    </Badge>
-                </div>
-                <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border mt-2">
-                    <span className="relative z-10 bg-background px-2 text-muted-foreground">
-                        Story
-                    </span>
-                </div>
-                <p className="text-s mt-2">{chapter.lore}</p>
-                <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border mt-2">
-                    <span className="relative z-10 bg-background px-2 text-muted-foreground">
-                        Fighting Doctrine
-                    </span>
-                </div>
+                {/* Content below the button */}
+                {editMode ? (
+                    <DetailsEdit
+                        chapterBarge={chapter.chapter_barge}
+                        founding={chapter.founding}
+                        homeworld={chapter.homeworld}
+                        geneSeed={chapter.gene_seed}
+                        name={chapter.name}
+                        lore={chapter.lore}
+                    />
+                ) : (
+                    <DetailsInfo
+                        chapterBarge={chapter.chapter_barge}
+                        founding={chapter.founding}
+                        homeworld={chapter.homeworld}
+                        geneSeed={chapter.gene_seed}
+                        name={chapter.name}
+                        lore={chapter.lore}
+                    />
+                )}
             </div>
+
             <div className="flex-1 h-full w-[75%] aspect-video rounded-xl bg-background ml-4">
 
                 <div className="grid gap-4 m-4 h-[96%] w-[97.5%] mr-4 grid-cols-2 md:grid-cols-4 auto-rows-[1fr]">
                     {roles.map((role, index) => (
-                        <MarineCard key={index} role={role.name} icon={<role.icon size={16} />} />
+                        <MarineCard key={index} role={role.name} icon={<role.icon size={16} />} onClick={() => navigate({ to: `/editor` })} />
                     ))}
                 </div>
             </div>
