@@ -1,9 +1,8 @@
 // ChaptersLayout.tsx
-import React from 'react';
 import { Outlet, useNavigate } from '@tanstack/react-router';
 import ProtectedRoute from '../router/Protected';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from '../components/ui/navigation-menu';
+import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from '../components/ui/navigation-menu';
 import { useAuth } from '../lib/contexts/AuthContext';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '../components/ui/sheet';
 import { ChapterForm } from '../components/chapter-form';
@@ -12,9 +11,21 @@ import { CirclePlus, LogOut, Settings } from 'lucide-react';
 import { supabase } from '../config/api';
 
 const AppLayout = () => {
-    const { user } = useAuth();
+    const { user, logout } = useAuth();
     const navigate = useNavigate();
     const currentUser = user
+
+    const handleLogout = async () => {
+      try {
+        const { error } = await supabase.auth.signOut()
+        logout()
+        navigate({ to: '/login' })
+        if (error) throw error
+      } catch (error) {
+        console.log(error)
+      }
+  
+    }
 
     async function createChapter(name: string, gene_seed: string) {
         if (!currentUser || !currentUser.id) {
@@ -34,6 +45,7 @@ const AppLayout = () => {
             console.error("Error creating chapter:", error);
         }
     }
+    
     return (
         <div className="flex flex-1 flex-col gap-4 p-4">
             <div className="grid auto-rows-min gap-2 md:grid-cols-3">
@@ -49,7 +61,7 @@ const AppLayout = () => {
                         <NavigationMenuList>
                             <NavigationMenuItem>
                                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                    Lexicarium
+                                    Manufactorum
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
                             <NavigationMenuItem>
@@ -73,7 +85,7 @@ const AppLayout = () => {
                         </SheetContent>
                     </Sheet>
 
-                    <Button variant="secondary" onClick={() => navigate({ to: '/' })} ><Settings /></Button>
+                    <Button variant="secondary" onClick={handleLogout} ><Settings /></Button>
 
                 </div>
             </div>

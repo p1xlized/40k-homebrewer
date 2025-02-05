@@ -6,23 +6,17 @@ import Editor from '../pages/Editor'
 import ProtectedRoute from '../router/Protected'
 import Register from '../pages/Register'
 import Collections from '../pages/ChaptersList'
-import SideBarPage from '../pages/SideBarPage'
 import ChapterDetails from '../pages/ChapterDetails'
 import AppLayout from '../pages/AppLayout'
 import Profile from '../pages/Profile'
+import CommunityPublicChapters from '../pages/CommunityPublicChapters'
 
 
-// Create root route (layout)
+
 const rootRoute = createRootRoute({
   component: Root,
 })
 
-// Define individual routes
-const indexRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/',
-  component: () => <SideBarPage><Home /></SideBarPage>,
-})
 
 
 const loginRoute = createRoute({
@@ -31,11 +25,6 @@ const loginRoute = createRoute({
   component: Login,
 })
 
-const registerRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/register',
-  component: Register,
-})
 
 const editorRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -43,26 +32,38 @@ const editorRoute = createRoute({
   component: Editor,
 })
 
+const registerRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/register',
+  component: Register,
+})
 
-const chaptersLayoutRoute = createRoute({
+const homePageRoute = createRoute({
+  getParentRoute: () => AppLayoutRoute,
+  path: '/',
+  component: CommunityPublicChapters,
+})
+
+
+const AppLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/app',
   component: AppLayout, 
 });
 
 const chaptersListRoute = createRoute({
-  getParentRoute: () => chaptersLayoutRoute,
+  getParentRoute: () => AppLayoutRoute,
   path: '/chapters', 
   component: Collections,
 });
 
 const detailsChapterRoute = createRoute({
-  getParentRoute: () => chaptersLayoutRoute,
+  getParentRoute: () => AppLayoutRoute,
   path: '/chapters/$id', 
   component: ChapterDetails,
 });
 const profileRoute = createRoute({
-  getParentRoute: () => chaptersLayoutRoute,
+  getParentRoute: () => AppLayoutRoute,
   path: '/profile/$id', 
   component: Profile,
 });
@@ -70,5 +71,5 @@ const profileRoute = createRoute({
  * RouteTree + Create Router, define routes on top and then add them here to routeTree
  * @author P1xlized
  */
-const routeTree = rootRoute.addChildren([indexRoute, loginRoute, registerRoute, editorRoute,chaptersLayoutRoute.addChildren([chaptersListRoute, detailsChapterRoute, profileRoute])])
+const routeTree = rootRoute.addChildren([ loginRoute, registerRoute, editorRoute,AppLayoutRoute.addChildren([chaptersListRoute, detailsChapterRoute, profileRoute, homePageRoute])])
 export const router = createRouter({ routeTree })

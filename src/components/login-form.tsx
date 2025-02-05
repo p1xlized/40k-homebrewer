@@ -50,7 +50,7 @@ export function LoginForm({
           };
   
           login(combinedData); 
-          navigate({ to: '/' });
+          navigate({ to: '/app/' });
         }
       }
     } catch (err) {

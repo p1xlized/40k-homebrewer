@@ -1,7 +1,7 @@
 import { CalendarRange, Dna, Eclipse } from "lucide-react";
 import { Badge } from "./ui/badge";
 
-interface DetailsInfoProps {
+interface DetailsEditProps {
     chapterBarge: string | undefined;
     founding: string | null;
     homeworld: string | null;

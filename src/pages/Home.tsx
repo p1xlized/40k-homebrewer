@@ -2,7 +2,6 @@ import { useAuth } from "../lib/contexts/AuthContext"
 import { supabase } from "../config/api"
 import { Button } from "../components/ui/button"
 import { useNavigate } from "@tanstack/react-router"
-import { Footer, FooterBottom, FooterColumn, FooterContent } from "../components/ui/footer"
 
 const Home = () => {
   const { user, logout } = useAuth()
@@ -163,7 +162,7 @@ const Home = () => {
 
             <a href="/">Terms of Service</a>
 
-            
+
 
           </div>
 
