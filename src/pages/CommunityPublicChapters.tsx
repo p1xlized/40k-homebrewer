@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import ChapterCardRework from '../components/chapter-card-rework'
 import { supabase } from '../config/api';
+import { useNavigate } from '@tanstack/react-router';
 
 
 const CommunityPublicChapters = () => {
   const [chapters, setChapters] = useState([]);
+  const navigate = useNavigate()
   async function fetchPublicChapters() {
     try {
       const { data, error } = await supabase
@@ -31,7 +33,7 @@ const CommunityPublicChapters = () => {
     <>
       <div className="grid grid-cols-4 gap-4 p-4 m-2">
         {chapters.map((chapter: any) => (
-          <ChapterCardRework image_url={chapter.chapter_barge} name={chapter.name} gene_seed={chapter.gene_seed} user_name={"Test"} key={chapter.chapter_id} />
+          <ChapterCardRework image_url={chapter.chapter_barge} name={chapter.name} gene_seed={chapter.gene_seed} user_name={"Test"} key={chapter.chapter_id} onClick={() => navigate({to: `/app/chapters/${chapter.chapter_id}`})} />
         ))}
       </div>
     </>

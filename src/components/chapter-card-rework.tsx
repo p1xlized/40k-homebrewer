@@ -6,11 +6,12 @@ interface ChapterCardReworkProps {
   image_url: string;
   name: string;
   gene_seed: string;
-  user_name: string
+  user_name: string;
+  onClick: () => void;
 }
-function ChapterCardRework({image_url, name, gene_seed, user_name}: ChapterCardReworkProps) {
+function ChapterCardRework({image_url, name, gene_seed, user_name, onClick}: ChapterCardReworkProps) {
   return (
-    <Card className="cursor-pointer w-72 h-96 transition flex flex-col items-center bg-primary p-2">
+    <Card className="cursor-pointer w-72 h-96 transition flex flex-col items-center bg-primary p-2" onClick={onClick}>
 
       <Tilt
         rotationFactor={6}

@@ -64,7 +64,7 @@ const ChapterDetails = () => {
         if (params.id) {
             setTimeout(() => {
                 fetchChapterData();
-            }, 4000);
+            }, 3000);
         }
     }, [params.id]);
 

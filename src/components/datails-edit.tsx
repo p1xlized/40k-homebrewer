@@ -33,7 +33,7 @@ const DetailsEdit = ({ chapterBarge, founding, homeworld, geneSeed, name, lore }
             </div>
 
             <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                <Badge className="gap-1">
+                <Badge className="gap-1 h-8 p-2">
                     <CalendarRange size={16} />
                     <input
                         type="text"

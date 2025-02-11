@@ -10,6 +10,7 @@ import ChapterDetails from '../pages/ChapterDetails'
 import AppLayout from '../pages/AppLayout'
 import Profile from '../pages/Profile'
 import CommunityPublicChapters from '../pages/CommunityPublicChapters'
+import LandingHero from '../pages/Home'
 
 
 
@@ -31,6 +32,11 @@ const editorRoute = createRoute({
   path: '/editor',
   component: Editor,
 })
+const homeRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/',
+  component: LandingHero,
+})
 
 const registerRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -38,7 +44,7 @@ const registerRoute = createRoute({
   component: Register,
 })
 
-const homePageRoute = createRoute({
+const AllChaptersRoute = createRoute({
   getParentRoute: () => AppLayoutRoute,
   path: '/',
   component: CommunityPublicChapters,
@@ -48,28 +54,28 @@ const homePageRoute = createRoute({
 const AppLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/app',
-  component: AppLayout, 
+  component: AppLayout,
 });
 
 const chaptersListRoute = createRoute({
   getParentRoute: () => AppLayoutRoute,
-  path: '/chapters', 
+  path: '/chapters',
   component: Collections,
 });
 
 const detailsChapterRoute = createRoute({
   getParentRoute: () => AppLayoutRoute,
-  path: '/chapters/$id', 
+  path: '/chapters/$id',
   component: ChapterDetails,
 });
 const profileRoute = createRoute({
   getParentRoute: () => AppLayoutRoute,
-  path: '/profile/$id', 
+  path: '/profile/$id',
   component: Profile,
 });
 /**
  * RouteTree + Create Router, define routes on top and then add them here to routeTree
  * @author P1xlized
  */
-const routeTree = rootRoute.addChildren([ loginRoute, registerRoute, editorRoute,AppLayoutRoute.addChildren([chaptersListRoute, detailsChapterRoute, profileRoute, homePageRoute])])
+const routeTree = rootRoute.addChildren([loginRoute, registerRoute, homeRoute, editorRoute, AppLayoutRoute.addChildren([chaptersListRoute, detailsChapterRoute, profileRoute, AllChaptersRoute])])
 export const router = createRouter({ routeTree })
