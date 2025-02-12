@@ -9,6 +9,7 @@ import MarineCard from "../components/marine-card";
 import DetailsInfo from "../components/datails-info";
 import DetailsEdit from "../components/datails-edit";
 import { Button } from "../components/ui/button";
+import { useAuth } from "../lib/contexts/AuthContext";
 interface Chapter {
     created_at: string;
     lore: string | null;
@@ -27,19 +28,20 @@ interface Chapter {
 
 const ChapterDetails = () => {
     const params = useParams({ from: '/app/chapters/$id' })
+    const { user } = useAuth();
     const [chapter, setChapter] = useState<Chapter | null>(null);
     const [loading, setLoading] = useState(true);
     const [editMode, setEditMode] = useState(false);
     const navigate = useNavigate()
     const roles = [
-        { name: "Chapter Master", icon: Shield },
-        { name: "Chaplain", icon: Cross },
-        { name: "Veteran", icon: Star },
-        { name: "Techmarine", icon: Cog },
-        { name: "Apothecary", icon: ShieldPlus },
-        { name: "Librarian", icon: Book },
-        { name: "Captain", icon: Sword },
-        { name: "Base", icon: Home }
+        { name: "Base Model", icon: Home, classfied: false },
+        { name: "Chapter Master", icon: Shield, classfied: true },
+        { name: "Chaplain", icon: Cross, classfied: true  },
+        { name: "Veteran", icon: Star, classfied: true  },
+        { name: "Techmarine", icon: Cog, classfied: true  },
+        { name: "Apothecary", icon: ShieldPlus, classfied: true  },
+        { name: "Librarian", icon: Book, classfied: true  },
+        { name: "Captain", icon: Sword, classfied: true  },
     ];
     async function fetchChapterData() {
         try {
@@ -67,6 +69,8 @@ const ChapterDetails = () => {
             }, 3000);
         }
     }, [params.id]);
+    console.log(chapter)
+    console.log(user)
 
     if (loading) {
         return (
@@ -84,7 +88,7 @@ const ChapterDetails = () => {
 
         <div className="flex p-4 h-screen">
             <div className="relative w-1/4 min-w-[40vh] h-full bg-background rounded-xl p-4">
-                {/* Button inside the div, positioned top-left */}
+               {chapter.user_id === user.id && (    
                 <Button
                     variant="outline"
                     size="icon"
@@ -93,6 +97,7 @@ const ChapterDetails = () => {
                 >
                     <Edit2 />
                 </Button>
+               )}
 
                 {/* Content below the button */}
                 {editMode ? (
@@ -120,7 +125,7 @@ const ChapterDetails = () => {
 
                 <div className="grid gap-4 m-4 h-[96%] w-[97.5%] mr-4 grid-cols-2 md:grid-cols-4 auto-rows-[1fr]">
                     {roles.map((role, index) => (
-                        <MarineCard key={index} role={role.name} icon={<role.icon size={16} />} onClick={() => navigate({ to: `/editor` })} />
+                        <MarineCard key={index} role={role.name} icon={<role.icon size={16} />} onClick={() => navigate({ to: `/editor` })} classified={role.classfied} />
                     ))}
                 </div>
             </div>

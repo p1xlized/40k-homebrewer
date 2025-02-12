@@ -54,7 +54,11 @@ const AllChaptersRoute = createRoute({
 const AppLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/app',
-  component: AppLayout,
+  component: () => (
+    <ProtectedRoute>
+      <AppLayout />
+    </ProtectedRoute>
+  ),
 });
 
 const chaptersListRoute = createRoute({

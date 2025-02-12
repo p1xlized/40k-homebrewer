@@ -4,8 +4,7 @@ import { useEffect, useRef } from "react"
 import { LayoutGroup, motion } from "framer-motion"
 import { TextRotate } from "../components/ui/text-rotate"
 import Floating, { FloatingElement } from "../components/ui/parallax-floating"
-import { Button } from "../components/ui/button"
-
+import { Link } from "@tanstack/react-router"
 const exampleImages = [
   {
     url: "https://awsoenusvdigsohsnkuw.supabase.co/storage/v1/object/public/painjobs//sm1.jpg",
@@ -58,79 +57,96 @@ const exampleImages = [
 
 function LandingHero() {
   return (
-    <section className="w-full h-screen overflow-hidden md:overflow-visible flex flex-col items-center justify-center relative">
-      <Floating sensitivity={-0.5} className="h-full">
-        <FloatingElement
-          depth={0.5}
-          className="top-[15%] left-[2%] md:top-[25%] md:left-[5%]"
-        >
-          <motion.img
-            src={exampleImages[0].url}
-            alt={exampleImages[0].title}
-            className="w-16 h-12 sm:w-24 sm:h-16 md:w-28 md:h-20 lg:w-32 lg:h-24 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform -rotate-[3deg] shadow-2xl rounded-xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          />
-        </FloatingElement>
+    <section className="w-screen max-h-screen h-screen overflow-hidden md:overflow-visible flex flex-col items-center justify-center relative">
+<Floating sensitivity={-0.5} className="h-[88vh] w-[98%] m-4">
+  <FloatingElement depth={0.5} className="top-[20%] left-[5%] md:top-[25%] md:left-[7%]">
+    <motion.img
+      src={exampleImages[0].url}
+      alt={exampleImages[0].title}
+      className="w-12 h-10 sm:w-16 sm:h-12 md:w-20 md:h-16 lg:w-24 lg:h-20 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform -rotate-[3deg] shadow-2xl rounded-xl"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.5 }}
+    />
+  </FloatingElement>
 
-        <FloatingElement
-          depth={1}
-          className="top-[0%] left-[8%] md:top-[6%] md:left-[11%]"
-        >
-          <motion.img
-            src={exampleImages[1].url}
-            alt={exampleImages[1].title}
-            className="w-40 h-28 sm:w-48 sm:h-36 md:w-56 md:h-44 lg:w-60 lg:h-48 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform -rotate-12 shadow-2xl rounded-xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.7 }}
-          />
-        </FloatingElement>
+  <FloatingElement depth={1} className="top-[5%] left-[10%] md:top-[8%] md:left-[14%]">
+    <motion.img
+      src={exampleImages[1].url}
+      alt={exampleImages[1].title}
+      className="w-32 h-24 sm:w-36 sm:h-28 md:w-44 md:h-32 lg:w-48 lg:h-36 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform -rotate-12 shadow-2xl rounded-xl"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.7 }}
+    />
+  </FloatingElement>
 
-        <FloatingElement
-          depth={4}
-          className="top-[90%] left-[6%] md:top-[80%] md:left-[8%]"
-        >
-          <motion.img
-            src={exampleImages[2].url}
-            alt={exampleImages[2].title}
-            className="w-40 h-40 sm:w-48 sm:h-48 md:w-60 md:h-60 lg:w-64 lg:h-64 object-cover -rotate-[4deg] hover:scale-105 duration-200 cursor-pointer transition-transform shadow-2xl rounded-xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.9 }}
-          />
-        </FloatingElement>
+  <FloatingElement depth={4} className="top-[85%] left-[10%] md:top-[75%] md:left-[12%]">
+    <motion.img
+      src={exampleImages[2].url}
+      alt={exampleImages[2].title}
+      className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-52 lg:h-52 object-cover -rotate-[4deg] hover:scale-105 duration-200 cursor-pointer transition-transform shadow-2xl rounded-xl"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.9 }}
+    />
+  </FloatingElement>
 
-        <FloatingElement
-          depth={2}
-          className="top-[0%] left-[87%] md:top-[2%] md:left-[83%]"
-        >
-          <motion.img
-            src={exampleImages[3].url}
-            alt={exampleImages[3].title}
-            className="w-40 h-36 sm:w-48 sm:h-44 md:w-60 md:h-52 lg:w-64 lg:h-56 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform shadow-2xl rotate-[6deg] rounded-xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.1 }}
-          />
-        </FloatingElement>
+  <FloatingElement depth={2} className="top-[3%] left-[85%] md:top-[5%] md:left-[82%]">
+    <motion.img
+      src={exampleImages[3].url}
+      alt={exampleImages[3].title}
+      className="w-36 h-32 sm:w-40 sm:h-36 md:w-48 md:h-44 lg:w-52 lg:h-48 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform shadow-2xl rotate-[6deg] rounded-xl"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1.1 }}
+    />
+  </FloatingElement>
 
-        <FloatingElement
-          depth={1}
-          className="top-[78%] left-[83%] md:top-[68%] md:left-[83%]"
-        >
-          <motion.img
-            src={exampleImages[4].url}
-            alt={exampleImages[4].title}
-            className="w-44 h-44 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform shadow-2xl rotate-[19deg] rounded-xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.3 }}
-          />
-        </FloatingElement>
-      </Floating>
+  <FloatingElement depth={1} className="top-[72%] left-[78%] md:top-[65%] md:left-[80%]">
+    <motion.img
+      src={exampleImages[4].url}
+      alt={exampleImages[4].title}
+      className="w-36 h-36 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-60 lg:h-60 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform shadow-2xl rotate-[15deg] rounded-xl"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1.3 }}
+    />
+  </FloatingElement>
 
+  {/* Additional Images (Moved Away from Center) */}
+  <FloatingElement depth={2} className="top-[45%] left-[70%] md:top-[45%] md:left-[70%]">
+    <motion.img
+      src={exampleImages[5].url}
+      alt={exampleImages[5].title}
+      className="w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 lg:w-48 lg:h-48 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform shadow-2xl -rotate-[10deg] rounded-xl"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1.5 }}
+    />
+  </FloatingElement>
+
+  <FloatingElement depth={3} className="top-[40%] left-[30%] md:top-[42%] md:left-[22%]">
+    <motion.img
+      src={exampleImages[6].url}
+      alt={exampleImages[6].title}
+      className="w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 lg:w-48 lg:h-48 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform shadow-2xl rotate-[8deg] rounded-xl"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1.7 }}
+    />
+  </FloatingElement>
+  <FloatingElement depth={3} className="top-[8%] left-[28%] md:top-[10%] md:left-[30%]">
+    <motion.img
+      src={exampleImages[6].url}
+      alt={exampleImages[6].title}
+      className="w-22 h-26 sm:w-36 sm:h-36 md:w-44 md:h-44 lg:w-48 lg:h-48 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform shadow-2xl rotate-[8deg] rounded-xl"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1.7 }}
+    />
+  </FloatingElement>
+</Floating>
       <div className="flex flex-col justify-center items-center w-[350px] sm:w-[300px] md:w-[500px] lg:w-[700px] z-50 pointer-events-auto">
         <motion.h1
           className="text-3xl sm:text-5xl md:text-7xl lg:text-6xl text-center w-full justify-center items-center flex-col flex whitespace-pre leading-tight font-calendas tracking-tight space-y-1 md:space-y-4"
@@ -154,7 +170,7 @@ function LandingHero() {
                   "mutated🧚‍♂️",
                   "heretical😈",
                   "loyal👑",
-                  "Oh mighty Machine Spirit🤖",
+                  "augmented🤖",
                   "wild💃🕺",
                   "smelly🤢",
                   "🕶️ smarta**",
@@ -198,9 +214,9 @@ function LandingHero() {
               transition: { type: "spring", damping: 30, stiffness: 400 },
             }}
           >
-            
+            <Link to="/app">
               Editor
-            
+            </Link>
           </motion.button>
           <motion.button
             className="sm:text-base md:text-xs lg:text-xl font-semibold tracking-tight text-white bg-secondary px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 lg:px-8 lg:py-3 rounded-full z-20 shadow-2xl font-calendas"
@@ -217,7 +233,7 @@ function LandingHero() {
               transition: { type: "spring", damping: 30, stiffness: 400 },
             }}
           >
-            ★ on GitHub
+            <Link to="/about">About</Link>
           </motion.button>
         </div>
       </div>
