@@ -18,7 +18,7 @@ const exampleImages = [
     author: "Tim Mossholder",
   },
   {
-    url: "https://awsoenusvdigsohsnkuw.supabase.co/storage/v1/object/public/painjobs//sm2.png",
+    url: "https://awsoenusvdigsohsnkuw.supabase.co/storage/v1/object/public/painjobs//sm9.jpg",
     link: "https://unsplash.com/photos/a-blurry-photo-of-a-crowd-of-people-UgbxzloNGsc",
     author: "ANDRII SOLOK",
     title: "A blurry photo of a crowd of people",
@@ -30,25 +30,25 @@ const exampleImages = [
     title: "Rippling Crystal Blue Water",
   },
   {
-    url: "https://images.unsplash.com/photo-1624344965199-ed40391d20f2?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    url: "https://awsoenusvdigsohsnkuw.supabase.co/storage/v1/object/public/painjobs//sm5.jpg",
     link: "https://unsplash.com/de/fotos/mann-im-schwarzen-hemd-unter-blauem-himmel-m8RDNiuEXro",
     author: "Serhii Tyaglovsky",
     title: "Mann im schwarzen Hemd unter blauem Himmel",
   },
   {
-    url: "https://images.unsplash.com/photo-1689553079282-45df1b35741b?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    url: "https://awsoenusvdigsohsnkuw.supabase.co/storage/v1/object/public/painjobs//sm6.jpeg",
     link: "https://unsplash.com/photos/a-woman-with-a-flower-crown-on-her-head-0S3muIttbsY",
     author: "Vladimir Yelizarov",
     title: "A women with a flower crown on her head",
   },
   {
-    url: "https://images.unsplash.com/photo-1721968317938-cf8c60fccd1a?q=80&w=2728&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    url: "https://awsoenusvdigsohsnkuw.supabase.co/storage/v1/object/public/painjobs//sm7.jpg",
     title: "A blurry photo of white flowers in a field",
     author: "Eugene Golovesov",
     link: "https://unsplash.com/photos/a-blurry-photo-of-white-flowers-in-a-field-6qbx0lzGPyc",
   },
   {
-    url: "https://images.unsplash.com/photo-1677338354108-223e807fb1bd?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    url: "https://awsoenusvdigsohsnkuw.supabase.co/storage/v1/object/public/painjobs//sm10.jpeg",
     author: "Mathilde Langevin",
     link: "https://unsplash.com/photos/a-table-topped-with-two-wine-glasses-and-plates-Ig0gRAHspV0",
     title: "A table topped with two wine glasses and plates",
@@ -72,8 +72,8 @@ function LandingHero() {
 
   <FloatingElement depth={1} className="top-[5%] left-[10%] md:top-[8%] md:left-[14%]">
     <motion.img
-      src={exampleImages[1].url}
-      alt={exampleImages[1].title}
+      src={exampleImages[7].url}
+      alt={exampleImages[7].title}
       className="w-32 h-24 sm:w-36 sm:h-28 md:w-44 md:h-32 lg:w-48 lg:h-36 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform -rotate-12 shadow-2xl rounded-xl"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -83,8 +83,8 @@ function LandingHero() {
 
   <FloatingElement depth={4} className="top-[85%] left-[10%] md:top-[75%] md:left-[12%]">
     <motion.img
-      src={exampleImages[2].url}
-      alt={exampleImages[2].title}
+      src={exampleImages[1].url}
+      alt={exampleImages[1].title}
       className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-52 lg:h-52 object-cover -rotate-[4deg] hover:scale-105 duration-200 cursor-pointer transition-transform shadow-2xl rounded-xl"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -94,8 +94,8 @@ function LandingHero() {
 
   <FloatingElement depth={2} className="top-[3%] left-[85%] md:top-[5%] md:left-[82%]">
     <motion.img
-      src={exampleImages[3].url}
-      alt={exampleImages[3].title}
+      src={exampleImages[2].url}
+      alt={exampleImages[2].title}
       className="w-36 h-32 sm:w-40 sm:h-36 md:w-48 md:h-44 lg:w-52 lg:h-48 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform shadow-2xl rotate-[6deg] rounded-xl"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -105,8 +105,8 @@ function LandingHero() {
 
   <FloatingElement depth={1} className="top-[72%] left-[78%] md:top-[65%] md:left-[80%]">
     <motion.img
-      src={exampleImages[4].url}
-      alt={exampleImages[4].title}
+      src={exampleImages[3].url}
+      alt={exampleImages[3].title}
       className="w-36 h-36 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-60 lg:h-60 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform shadow-2xl rotate-[15deg] rounded-xl"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -117,8 +117,8 @@ function LandingHero() {
   {/* Additional Images (Moved Away from Center) */}
   <FloatingElement depth={2} className="top-[45%] left-[70%] md:top-[45%] md:left-[70%]">
     <motion.img
-      src={exampleImages[5].url}
-      alt={exampleImages[5].title}
+      src={exampleImages[4].url}
+      alt={exampleImages[4].title}
       className="w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 lg:w-48 lg:h-48 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform shadow-2xl -rotate-[10deg] rounded-xl"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -128,8 +128,8 @@ function LandingHero() {
 
   <FloatingElement depth={3} className="top-[40%] left-[30%] md:top-[42%] md:left-[22%]">
     <motion.img
-      src={exampleImages[6].url}
-      alt={exampleImages[6].title}
+      src={exampleImages[5].url}
+      alt={exampleImages[5].title}
       className="w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 lg:w-48 lg:h-48 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform shadow-2xl rotate-[8deg] rounded-xl"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

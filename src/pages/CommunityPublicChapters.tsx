@@ -3,6 +3,9 @@ import ChapterCardRework from '../components/chapter-card-rework'
 import { supabase } from '../config/api';
 import { useNavigate } from '@tanstack/react-router';
 import Loader from "../assets/ressources/loader.gif";
+import { Label } from "@/components/ui/field"
+import { Tag, TagGroup, TagList } from "@/components/ui/tag-group"
+
 
 interface Chapter {
   created_at: string;
@@ -29,9 +32,12 @@ const CommunityPublicChapters = () => {
     try {
       const { data, error } = await supabase
         .from("chapters")
-        .select("*")
+        .select(`
+          *,
+          user:profiles(username, picture_url)`)
         .eq("public", true)
         .order("created_at", { ascending: false })
+
 
       if (error) throw error;
 
@@ -66,13 +72,28 @@ const CommunityPublicChapters = () => {
   console.log(chapters)
   return (
     <>
+      <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+        <div className="rounded-xl "></div>
+        <div className="rounded-xl p-4 flex align-center justify-center">
+          <TagGroup className="space-y-1" selectionMode="multiple">
+            <TagList>
+              <Tag>News</Tag>
+              <Tag>Travel</Tag>
+              <Tag>Gaming</Tag>
+              <Tag>Shopping</Tag>
+            </TagList>
+          </TagGroup>
+        </div>
+        <div className="rounded-xl "></div>
+      </div>
       <div className="grid grid-cols-4 gap-4 p-4 m-2">
         {chapters.map((chapter: any) => (
           <ChapterCardRework
             image_url={chapter.chapter_barge}
             name={chapter.name}
             gene_seed={chapter.gene_seed}
-            user_name={"Test"}
+            user_name={chapter.user.username}
+            picture_url={chapter.user.picture_url}
             key={chapter.chapter_id}
             onClick={() => navigate({ to: `/app/chapters/${chapter.chapter_id}` })} />
         ))}

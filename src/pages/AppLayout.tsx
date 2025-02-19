@@ -50,7 +50,7 @@ const AppLayout = () => {
         <div className="flex flex-1 flex-col gap-4 p-4">
             <div className="grid auto-rows-min gap-2 md:grid-cols-3">
                 <div className="flex justify-start items-center " >
-                    <Avatar>
+                    <Avatar onClick={() => navigate({ to: `/app/profile/${currentUser.id}` })}>
                         <AvatarImage src={user.picture_url} className="h-8 w-8 rounded-full" />
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>

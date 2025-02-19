@@ -28,7 +28,7 @@ const loginRoute = createRoute({
 
 
 const editorRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AppLayoutRoute,
   path: '/editor',
   component: Editor,
 })
