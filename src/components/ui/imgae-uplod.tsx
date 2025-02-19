@@ -56,7 +56,7 @@ export function ImageUpload() {
   )
 
   return (
-    <div className="w-full max-w-md space-y-6 rounded-xl border border-border bg-card p-6 shadow-sm">
+    <div className="w-full max-w-md space-y-6 rounded-xl border border-border bg-muted/50 p-6 shadow-sm">
       <div className="space-y-2">
         <h3 className="text-lg font-medium">Upload Your Chapter Badge</h3>
         <p className="text-sm text-muted-foreground">

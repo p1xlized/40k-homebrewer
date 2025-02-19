@@ -1,4 +1,5 @@
 import { cn } from "../lib/utils"
+import { useEffect } from "react"
 import { Button } from "../components/ui/button"
 import { Input } from "../components/ui/input"
 import { Label } from "../components/ui/label"
@@ -7,6 +8,7 @@ import { useState } from "react"
 import loyalist from "../assets/ressources/loyalist.gif"
 import heretic from "../assets/ressources/heretic.gif"
 import { useNavigate } from "@tanstack/react-router"
+
 
 export function RegisterForm({
   className,
@@ -17,6 +19,7 @@ export function RegisterForm({
   const [password, setPassword] = useState("")
   const [selectedGif, setSelectedGif] = useState<"loyalist" | "heretic" | null>(null)
   const navigate = useNavigate();
+
   async function handleRegister() {
     try {
       // Sign up the user
@@ -42,7 +45,7 @@ export function RegisterForm({
       console.error("Registration failed:", err.message);
     }
   }
-  console.log(username, email, password, selectedGif)
+  console.log(selectedGif)
   return (
     <form
       className={cn("flex flex-col gap-6", className)}
@@ -105,18 +108,18 @@ export function RegisterForm({
           <div
             className={cn(
               "rounded-xl bg-muted/50 p-2 cursor-pointer",
-              selectedGif === 1 && "ring-4 ring-primary"
+              selectedGif === 'loyalist' && "ring-4 ring-primary"
             )}
-            onClick={() => setSelectedGif(1)}
+            onClick={() => setSelectedGif('heretic')}
           >
             <img src={loyalist} alt="Loyalist" className="h-32 w-32" />
           </div>
           <div
             className={cn(
               "rounded-xl bg-muted/50 p-2 cursor-pointer",
-              selectedGif === 2 && "ring-4 ring-primary"
+              selectedGif === 'heretic' && "ring-4 ring-primary"
             )}
-            onClick={() => setSelectedGif(2)}
+            onClick={() => setSelectedGif('heretic')}
           >
             <img src={heretic} alt="Heretic" className="h-32 w-32" />
           </div>

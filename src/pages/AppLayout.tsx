@@ -60,12 +60,12 @@ const AppLayout = () => {
                     <NavigationMenu>
                         <NavigationMenuList>
                             <NavigationMenuItem>
-                                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                <NavigationMenuLink className={navigationMenuTriggerStyle()} onClick={() => navigate({ to: `/app/chapters` })}>
                                     Manufactorum
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
                             <NavigationMenuItem>
-                                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                <NavigationMenuLink className={navigationMenuTriggerStyle()} onClick={() => navigate({ to: `/app` })}>
                                     Inquisition
                                 </NavigationMenuLink>
                             </NavigationMenuItem>

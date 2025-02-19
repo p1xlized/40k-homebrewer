@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import ChapterCardRework from '../components/chapter-card-rework'
 import { supabase } from '../config/api';
 import { useNavigate } from '@tanstack/react-router';
 import Loader from "../assets/ressources/loader.gif";
-import { Label } from "@/components/ui/field"
-import { Tag, TagGroup, TagList } from "@/components/ui/tag-group"
+import { Tag, TagGroup, TagList } from "../components/ui/tag-group"
 
 
 interface Chapter {
@@ -72,9 +71,9 @@ const CommunityPublicChapters = () => {
   console.log(chapters)
   return (
     <>
-      <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+      <div className="grid auto-rows-min gap-4 md:grid-cols-3 mt-2">
         <div className="rounded-xl "></div>
-        <div className="rounded-xl p-4 flex align-center justify-center">
+        <div className="rounded-xl  flex align-center justify-center">
           <TagGroup className="space-y-1" selectionMode="multiple">
             <TagList>
               <Tag>News</Tag>
@@ -86,21 +85,28 @@ const CommunityPublicChapters = () => {
         </div>
         <div className="rounded-xl "></div>
       </div>
-      <div className="grid grid-cols-4 gap-4 p-4 m-2">
-        {chapters.map((chapter: any) => (
-          <ChapterCardRework
-            image_url={chapter.chapter_barge}
-            name={chapter.name}
-            gene_seed={chapter.gene_seed}
-            user_name={chapter.user.username}
-            picture_url={chapter.user.picture_url}
-            key={chapter.chapter_id}
-            onClick={() => navigate({ to: `/app/chapters/${chapter.chapter_id}` })} />
-        ))}
-      </div>
-    </>
+      <div className="flex w-full items-center rounded-full mx-4">
+        <div className="flex-1 border-b border-text"></div>
+        <span className="text-white text-lg font-semibold leading-8 px-8 py-3">Notification</span>
+        <div className="flex-1 border-b bborder-text ml-2"></div>
+        </div>
+        <div className="grid grid-cols-4 gap-4 p-4 m-2 justify-items-center">
 
-  )
+          {chapters.map((chapter: any) => (
+            <ChapterCardRework
+              image_url={chapter.chapter_barge}
+              name={chapter.name}
+              gene_seed={chapter.gene_seed}
+              user_name={chapter.user.username}
+              picture_url={chapter.user.picture_url}
+              key={chapter.chapter_id}
+              onClick={() => navigate({ to: `/app/chapters/${chapter.chapter_id}` })} />
+          ))}
+        </div>
+
+      </>
+
+      )
 }
 
-export default CommunityPublicChapters
+      export default CommunityPublicChapters
