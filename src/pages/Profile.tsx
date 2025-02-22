@@ -1,26 +1,12 @@
-import { useCharacterLimit } from "../hooks/use-character-limit";
-import { useImageUpload } from "../hooks/use-image-upload";
+import { useState } from "react";
 import { Button } from "../components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../components/ui/dialog";
 import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
-import { Textarea } from "../components/ui/textarea";
-import { Check, Heart, ImagePlus, X } from "lucide-react";
-import { useState, useEffect } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
-import { useParams } from "@tanstack/react-router";
+import { Pencil, Check, X, Settings2 } from "lucide-react";
 import { supabase } from "../config/api";
-import Imperium from "../assets/ressources/imperium.jpg"
-import Chaos from "../assets/ressources/chaos.jpg"
+import Imperium from "../assets/ressources/imperium.jpg";
+import Chaos from "../assets/ressources/chaos.jpg";
+import { PinnedChapter } from "../components/pinned-chapter-card";
+import { useParams } from "@tanstack/react-router";
 
 interface UserProfile {
   auth_id: string;
@@ -32,194 +18,151 @@ interface UserProfile {
 
 function Profile() {
   const [data, setData] = useState<UserProfile | null>(null);
-  const params = useParams({ from: '/app/profile/$id' });
+  const [isEditing, setIsEditing] = useState(false);
+  const [newUsername, setNewUsername] = useState("");
+  const [newImage, setNewImage] = useState<string | null>(null);
+  const params = useParams({ from: "/app/profile/$id" });
   const id = params.id;
-
-  const maxLength = 180;
-  const {
-    value,
-    characterCount,
-    handleChange,
-    maxLength: limit,
-  } = useCharacterLimit({
-    maxLength,
-    initialValue:
-      "Hey, I am Margaret, a web developer who loves turning ideas into amazing websites!",
-  });
+  const [pinned, setPinned] = useState<any[]>([]);
 
   async function fetchProfiles() {
     try {
-      const { data } = await supabase.from('profiles').select('*').eq('id', id).single();
-      setData(data);
+      const { data: profile } = await supabase.from("profiles").select("*").eq("id", id).single();
+      const { data: pinnedWithChapters } = await supabase
+        .from("pinned")
+        .select("*, chapters(*)")
+        .eq("user_id", id);
+
+      setData(profile);
+      setPinned(pinnedWithChapters || []);
+      setNewUsername(profile?.username || "");
+      setNewImage(profile?.picture_url || null);
     } catch (error) {
       console.log(error);
     }
   }
 
-  useEffect(() => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => setNewImage(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSave = async () => {
+    if (!data) return;
+
+    try {
+      await supabase
+        .from("profiles")
+        .update({ username: newUsername, picture_url: newImage })
+        .eq("id", id);
+
+      setData((prev) => (prev ? { ...prev, username: newUsername, picture_url: newImage || prev.picture_url } : null));
+      setIsEditing(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useState(() => {
     fetchProfiles();
   }, [id]);
 
   if (!data) {
-    // Loading state
     return <div className="min-h-screen flex justify-center items-center">Loading...</div>;
   }
 
   return (
-<div className="min-h-screen">
-  <div className="w-full mx-auto p-4">
-    <div className="shadow-sm rounded-lg mb-6 bg-back">
-      <div className="relative">
-        {/* Profile Background Image */}
-        <img
-          src={data.favorite_faction === "loyalist" ? Imperium : Chaos}
-          alt="Cover Photo"
-          className="w-full h-[88vh] object-cover rounded-xl"
-        />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-3/4 p-4 text-center">
-          <div className="flex flex-col items-center justify-center">
-            {/* Avatar with larger size */}
+    <div className="min-h-screen">
+      <div className="w-full mx-auto">
+        <div className="shadow-sm rounded-lg mb-6 bg-back">
+          <div className="relative">
             <img
-              src={data.picture_url}
-              alt="Avatar"
-              className="h-32 w-32 rounded-full border-4 border-white"
+              src={data.favorite_faction === "loyalist" ? Imperium : Chaos}
+              alt="Cover Photo"
+              className="w-full h-[88vh] object-cover rounded-xl"
             />
-            {/* Username below Avatar */}
-            <p className="text-lg text-white font-semibold">
-              <strong>{data.username}</strong>
-            </p>
-          </div>
-        </div>
-
-        {/* Edit Profile Button in Top Right Corner */}
-        <div className="absolute top-4 right-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline">Edit profile</Button>
-            </DialogTrigger>
-            <DialogContent className="flex flex-col gap-0 overflow-y-visible p-0 sm:max-w-lg [&>button:last-child]:top-3.5">
-              <DialogHeader className="contents space-y-0 text-left">
-                <DialogTitle className="border-b border-border px-6 py-4 text-base">
-                  Edit profile
-                </DialogTitle>
-              </DialogHeader>
-              <DialogDescription className="sr-only">
-                Make changes to your profile here. You can change your photo and set a username.
-              </DialogDescription>
-              <div className="overflow-y-auto">
-                <ProfileBg defaultImage="https://originui.com/profile-bg.jpg" />
-                <Avatar defaultImage="https://originui.com/avatar-72-01.jpg" />
-                <div className="px-6 pb-6 pt-4">
-                  <form className="space-y-4">
-                    <div className="flex flex-col gap-4 sm:flex-row">
-                      <div className="flex-1 space-y-2">
-                        <Label htmlFor={`${id}-first-name`}>First name</Label>
-                        <Input
-                          id={`${id}-first-name`}
-                          placeholder="Matt"
-                          defaultValue="Margaret"
-                          type="text"
-                          required
-                        />
-                      </div>
-                      <div className="flex-1 space-y-2">
-                        <Label htmlFor={`${id}-last-name`}>Last name</Label>
-                        <Input
-                          id={`${id}-last-name`}
-                          placeholder="Welsh"
-                          defaultValue="Villard"
-                          type="text"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor={`${id}-username`}>Username</Label>
-                      <div className="relative">
-                        <Input
-                          id={`${id}-username`}
-                          className="peer pe-9"
-                          placeholder="Username"
-                          defaultValue="margaret-villard-69"
-                          type="text"
-                          required
-                        />
-                        <div className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-muted-foreground/80 peer-disabled:opacity-50">
-                          <Check
-                            size={16}
-                            strokeWidth={2}
-                            className="text-emerald-500"
-                            aria-hidden="true"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor={`${id}-website`}>Website</Label>
-                      <div className="flex rounded-lg shadow-sm shadow-black/5">
-                        <span className="-z-10 inline-flex items-center rounded-s-lg border border-input bg-background px-3 text-sm text-muted-foreground">
-                          https://
-                        </span>
-                        <Input
-                          id={`${id}-website`}
-                          className="-ms-px rounded-s-none shadow-none"
-                          placeholder="yourwebsite.com"
-                          defaultValue="www.margaret.com"
-                          type="text"
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor={`${id}-bio`}>Biography</Label>
-                      <Textarea
-                        id={`${id}-bio`}
-                        placeholder="Write a few sentences about yourself"
-                        defaultValue={value}
-                        maxLength={maxLength}
-                        onChange={handleChange}
-                        aria-describedby={`${id}-description`}
-                      />
-                      <p
-                        id={`${id}-description`}
-                        className="mt-2 text-right text-xs text-muted-foreground"
-                        role="status"
-                        aria-live="polite"
-                      >
-                        <span className="tabular-nums">{limit - characterCount}</span> characters left
-                      </p>
-                    </div>
-                  </form>
-                </div>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-3/4 p-4 text-center">
+              <div className="flex flex-col items-center justify-center">
+                {isEditing ? (
+                  <>
+                    <input type="file" accept="image/*" onChange={handleImageChange} className="mb-2" />
+                    {newImage && (
+                      <img src={newImage} alt="New Avatar" className="h-32 w-32 rounded-full border-4 border-white" />
+                    )}
+                    <Input
+                      value={newUsername}
+                      onChange={(e) => setNewUsername(e.target.value)}
+                      className="mt-2 text-center bg-muted/50 p-2 rounded-md"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <img
+                      src={data.picture_url}
+                      alt="Avatar"
+                      className="h-32 w-32 rounded-full border-4 border-white"
+                    />
+                    <p className="text-lg text-white font-semibold">
+                      <strong>{data.username}</strong>
+                    </p>
+                  </>
+                )}
               </div>
-              <DialogFooter className="border-t border-border px-6 py-4">
-                <DialogClose asChild>
-                  <Button type="button" variant="outline">
-                    Cancel
+            </div>
+            <div className="absolute top-4 left-4">
+            </div>
+            <div className="absolute top-4 right-4">
+              {isEditing ? (
+                <>
+                  <Button variant="secondary" className="mx-2" onClick={handleSave}>
+                    <Check />
                   </Button>
-                </DialogClose>
-                <DialogClose asChild>
-                  <Button type="button">Save changes</Button>
-                </DialogClose>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </div>
+                  <Button variant="destructive" onClick={() => setIsEditing(false)}>
+                    <X />
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="outline" className="mx-2" onClick={() => setIsEditing(true)}>
+                    <Settings2 />
+                  </Button>
+                  <Button variant="outline" onClick={() => setIsEditing(true)}>
+                    <Pencil />
+                  </Button>
+                </>
 
-        {/* Row of 4 divs inside the image */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-4">
-          <div className="p-4 bg-gray-100 rounded-lg shadow-sm w-1/5">Div 1</div>
-          <div className="p-4 bg-gray-100 rounded-lg shadow-sm w-1/5">Div 2</div>
-          <div className="p-4 bg-gray-100 rounded-lg shadow-sm w-1/5">Div 3</div>
-          <div className="p-4 bg-gray-100 rounded-lg shadow-sm w-1/5">Div 4</div>
+              )}
+            </div>
+
+            {/* Pinned Chapters */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-4">
+              {[0, 1, 2, 3].map((slot) => {
+                const item = pinned[slot];
+                return (
+                  <div key={slot}>
+                    {item ? (
+                      <PinnedChapter name={item.chapters.name} chapter_barge={item.chapters.chapter_barge} />
+                    ) : (
+                      <PinnedChapter />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
   );
 }
 
 export default Profile;
+
 
 function ProfileBg({ defaultImage }: { defaultImage?: string }) {
   const [hideDefault, setHideDefault] = useState(false);

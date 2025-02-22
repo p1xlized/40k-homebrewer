@@ -1,6 +1,5 @@
 // ChaptersLayout.tsx
 import { Outlet, useNavigate } from '@tanstack/react-router';
-import ProtectedRoute from '../router/Protected';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from '../components/ui/navigation-menu';
 import { useAuth } from '../lib/contexts/AuthContext';
@@ -9,6 +8,7 @@ import { ChapterForm } from '../components/chapter-form';
 import { Button } from '../components/ui/button';
 import { CirclePlus, LogOut, Settings } from 'lucide-react';
 import { supabase } from '../config/api';
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
 
 const AppLayout = () => {
     const { user, logout } = useAuth();
@@ -16,15 +16,15 @@ const AppLayout = () => {
     const currentUser = user
 
     const handleLogout = async () => {
-      try {
-        const { error } = await supabase.auth.signOut()
-        logout()
-        navigate({ to: '/login' })
-        if (error) throw error
-      } catch (error) {
-        console.log(error)
-      }
-  
+        try {
+            const { error } = await supabase.auth.signOut()
+            logout()
+            navigate({ to: '/login' })
+            if (error) throw error
+        } catch (error) {
+            console.log(error)
+        }
+
     }
 
     async function createChapter(name: string, gene_seed: string) {
@@ -45,7 +45,7 @@ const AppLayout = () => {
             console.error("Error creating chapter:", error);
         }
     }
-    
+
     return (
         <div className="flex flex-1 flex-col gap-4 p-4">
             <div className="grid auto-rows-min gap-2 md:grid-cols-3">
@@ -84,8 +84,27 @@ const AppLayout = () => {
                             </SheetHeader>
                         </SheetContent>
                     </Sheet>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button variant="outline"><Settings /></Button>
+                        </DialogTrigger>
+                        <DialogContent className="flex flex-col gap-0 overflow-y-visible p-0 sm:max-w-lg [&>button:last-child]:top-3.5">
+                            <DialogHeader className="contents space-y-0 text-left">
+                                <DialogTitle className="border-b border-border px-6 py-4 text-base">
+                                    Settings
+                                </DialogTitle>
+                            </DialogHeader>
+                            <div className="p-2">
+                                <Button variant="outline" className="w-full mt-2">Change theme</Button>
+                                <Button variant="outline" className="w-full mt-2">Change theme</Button>
 
-                    <Button variant="secondary" onClick={handleLogout} ><Settings /></Button>
+                            </div>
+                            <DialogFooter className="border-t border-border px-6 py-4">
+                                <Button variant="destructive" className="w-full" onClick={handleLogout} >LogOut</Button>
+
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
 
                 </div>
             </div>
