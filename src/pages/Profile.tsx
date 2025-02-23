@@ -7,6 +7,18 @@ import Imperium from "../assets/ressources/imperium.jpg";
 import Chaos from "../assets/ressources/chaos.jpg";
 import { PinnedChapter } from "../components/pinned-chapter-card";
 import { useParams } from "@tanstack/react-router";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../components/ui/dialog";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../components/ui/sheet";
+import { Badge } from "../components/ui/badge";
 
 interface UserProfile {
   auth_id: string;
@@ -83,7 +95,7 @@ function Profile() {
             <img
               src={data.favorite_faction === "loyalist" ? Imperium : Chaos}
               alt="Cover Photo"
-              className="w-full h-[88vh] object-cover rounded-xl"
+              className="w-full h-[92vh] object-cover rounded-xl"
             />
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-3/4 p-4 text-center">
               <div className="flex flex-col items-center justify-center">
@@ -127,10 +139,50 @@ function Profile() {
                 </>
               ) : (
                 <>
-                  <Button variant="outline" className="mx-2" onClick={() => setIsEditing(true)}>
-                    <Settings2 />
-                  </Button>
-                  <Button variant="outline" onClick={() => setIsEditing(true)}>
+                  <Sheet>
+                    <SheetTrigger>
+                      <Button className="mx-2">
+                        <Settings2 />
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent side="bottom" className="w-full">
+                      <SheetHeader>
+                        <SheetTitle>Chose you Background</SheetTitle>
+                        <SheetDescription>
+                          <div>
+                            <div className="flex w-full items-center mt-auto relative z-10 mt-4 mb-4">
+                              <div className="flex-1 border-b border-primary mr-2"></div>
+                              <Badge variant="secondary" className="gap-1">
+                                Traitors
+                              </Badge>
+                              <div className="flex-1 border-b border-primary ml-2"></div>
+                            </div>
+                            <div className="flex justify-around gap-4">
+                              <div className="aspect-video h-28 bg-gray-300"></div>
+                              <div className="aspect-video h-28 bg-gray-300"></div>
+                              <div className="aspect-video h-28 bg-gray-300"></div>
+                              <div className="aspect-video h-28 bg-gray-300"></div>
+                            </div>
+                            <div className="flex w-full items-center mt-auto relative z-10 mt-4 mb-4">
+                              <div className="flex-1 border-b border-primary mr-2"></div>
+                              <Badge variant="destructive" className="gap-1">
+                                Traitors
+                              </Badge>
+                              <div className="flex-1 border-b border-primary ml-2"></div>
+                            </div>
+                            <div className="flex justify-around gap-4">
+                              <div className="aspect-video h-28 bg-gray-300"></div>
+                              <div className="aspect-video h-28 bg-gray-300"></div>
+                              <div className="aspect-video h-28 bg-gray-300"></div>
+                              <div className="aspect-video h-28 bg-gray-300"></div>
+                            </div>
+                          </div>
+
+                        </SheetDescription>
+                      </SheetHeader>
+                    </SheetContent>
+                  </Sheet>
+                  <Button onClick={() => setIsEditing(true)}>
                     <Pencil />
                   </Button>
                 </>
@@ -162,62 +214,3 @@ function Profile() {
 }
 
 export default Profile;
-
-
-function ProfileBg({ defaultImage }: { defaultImage?: string }) {
-  const [hideDefault, setHideDefault] = useState(false);
-  const { previewUrl, fileInputRef, handleThumbnailClick, handleFileChange, handleRemove } =
-    useImageUpload();
-
-  const currentImage = previewUrl || (!hideDefault ? defaultImage : null);
-
-  const handleImageRemove = () => {
-    handleRemove();
-    setHideDefault(true);
-  };
-
-  return (
-    <div className="h-32">
-      <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-muted">
-        {currentImage && (
-          <img
-            className="h-full w-full object-cover"
-            src={currentImage}
-            alt={previewUrl ? "Preview of uploaded image" : "Default profile background"}
-            width={512}
-            height={96}
-          />
-        )}
-        <div className="absolute inset-0 flex items-center justify-center gap-2">
-          <button
-            type="button"
-            className="z-50 flex size-10 cursor-pointer items-center justify-center rounded-full bg-black/60 text-white outline-offset-2 transition-colors hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70"
-            onClick={handleThumbnailClick}
-            aria-label={currentImage ? "Change image" : "Upload image"}
-          >
-            <ImagePlus size={16} strokeWidth={2} aria-hidden="true" />
-          </button>
-          {currentImage && (
-            <button
-              type="button"
-              className="z-50 flex size-10 cursor-pointer items-center justify-center rounded-full bg-black/60 text-white outline-offset-2 transition-colors hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70"
-              onClick={handleImageRemove}
-              aria-label="Remove image"
-            >
-              <X size={16} strokeWidth={2} aria-hidden="true" />
-            </button>
-          )}
-        </div>
-      </div>
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handleFileChange}
-        className="hidden"
-        accept="image/*"
-        aria-label="Upload image file"
-      />
-    </div>
-  );
-}
-
