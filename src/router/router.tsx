@@ -29,7 +29,7 @@ const loginRoute = createRoute({
 
 const editorRoute = createRoute({
   getParentRoute: () => AppLayoutRoute,
-  path: '/editor',
+  path: '/editor/$id',
   component: Editor,
 })
 const homeRoute = createRoute({
@@ -81,5 +81,5 @@ const profileRoute = createRoute({
  * RouteTree + Create Router, define routes on top and then add them here to routeTree
  * @author P1xlized
  */
-const routeTree = rootRoute.addChildren([loginRoute, registerRoute, homeRoute, editorRoute, AppLayoutRoute.addChildren([chaptersListRoute, detailsChapterRoute, profileRoute, AllChaptersRoute])])
+const routeTree = rootRoute.addChildren([loginRoute, registerRoute, homeRoute, AppLayoutRoute.addChildren([chaptersListRoute, editorRoute, detailsChapterRoute, profileRoute, AllChaptersRoute])])
 export const router = createRouter({ routeTree })

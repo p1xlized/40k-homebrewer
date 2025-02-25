@@ -125,7 +125,7 @@ const ChapterDetails = () => {
 
                 <div className="grid gap-4 m-4 h-[96%] w-[97.5%] mr-4 grid-cols-2 md:grid-cols-4 auto-rows-[1fr]">
                     {roles.map((role, index) => (
-                        <MarineCard key={index} role={role.name} icon={<role.icon size={16} />} onClick={() => navigate({ to: `/editor` })} classified={role.classfied} />
+                        <MarineCard key={index} role={role.name} icon={<role.icon size={16} />} onClick={() => navigate({ to: `/app/editor/${params.id}` })} classified={role.classfied} />
                     ))}
                 </div>
             </div>

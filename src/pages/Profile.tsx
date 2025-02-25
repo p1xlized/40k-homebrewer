@@ -26,6 +26,7 @@ interface UserProfile {
   id: string;
   picture_url: string;
   username: string;
+  profile_bg: string;
 }
 
 function Profile() {
@@ -36,21 +37,43 @@ function Profile() {
   const params = useParams({ from: "/app/profile/$id" });
   const id = params.id;
   const [pinned, setPinned] = useState<any[]>([]);
+  const [background, setBackground] = useState<string | null>(null);
 
   async function fetchProfiles() {
     try {
-      const { data: profile } = await supabase.from("profiles").select("*").eq("id", id).single();
-      const { data: pinnedWithChapters } = await supabase
+      // Fetch profile data
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (profileError) throw profileError;
+
+      // Fetch pinned chapters
+      const { data: pinnedWithChapters, error: pinnedError } = await supabase
         .from("pinned")
         .select("*, chapters(*)")
         .eq("user_id", id);
 
+      if (pinnedError) throw pinnedError;
+
+      // Fetch all profile backgrounds
+      const { data: bgData, error: bgError } = await supabase
+        .from("profile_bg")
+        .select("*");
+
+      if (bgError) throw bgError;
+
+      // Set fetched data
       setData(profile);
       setPinned(pinnedWithChapters || []);
       setNewUsername(profile?.username || "");
       setNewImage(profile?.picture_url || null);
+      setBackground(bgData || []); // Store all backgrounds
+
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching profile:", error);
     }
   }
 
@@ -86,14 +109,15 @@ function Profile() {
   if (!data) {
     return <div className="min-h-screen flex justify-center items-center">Loading...</div>;
   }
-
+  console.log(background)
+  console.log(data)
   return (
     <div className="min-h-screen">
       <div className="w-full mx-auto">
         <div className="shadow-sm rounded-lg mb-6 bg-back">
           <div className="relative">
             <img
-              src={data.favorite_faction === "loyalist" ? Imperium : Chaos}
+              src={background[data.profile_bg - 1].img_link || Imperium}
               alt="Cover Photo"
               className="w-full h-[92vh] object-cover rounded-xl"
             />
@@ -150,32 +174,22 @@ function Profile() {
                         <SheetTitle>Chose you Background</SheetTitle>
                         <SheetDescription>
                           <div>
-                            <div className="flex w-full items-center mt-auto relative z-10 mt-4 mb-4">
-                              <div className="flex-1 border-b border-primary mr-2"></div>
-                              <Badge variant="secondary" className="gap-1">
-                                Traitors
-                              </Badge>
-                              <div className="flex-1 border-b border-primary ml-2"></div>
-                            </div>
                             <div className="flex justify-around gap-4">
-                              <div className="aspect-video h-28 bg-gray-300"></div>
-                              <div className="aspect-video h-28 bg-gray-300"></div>
-                              <div className="aspect-video h-28 bg-gray-300"></div>
-                              <div className="aspect-video h-28 bg-gray-300"></div>
+                              {background.map((bg, index) => (
+                                <div key={index} className="flex flex-col items-center">
+                                  <img
+                                    src={bg.img_link}
+                                    alt={`Background ${index + 1}`}
+                                    className="w-32 h-32 object-cover rounded-full border-4 border-white"
+                                    onClick={() => {
+                                      setData((prev) => (prev ? { ...prev, profile_bg: index + 1 } : null));
+                                    }}
+                                  />
+                                  <p className="text-sm text-center">{bg.name}</p>
+                                </div>
+                              ))}
                             </div>
-                            <div className="flex w-full items-center mt-auto relative z-10 mt-4 mb-4">
-                              <div className="flex-1 border-b border-primary mr-2"></div>
-                              <Badge variant="destructive" className="gap-1">
-                                Traitors
-                              </Badge>
-                              <div className="flex-1 border-b border-primary ml-2"></div>
-                            </div>
-                            <div className="flex justify-around gap-4">
-                              <div className="aspect-video h-28 bg-gray-300"></div>
-                              <div className="aspect-video h-28 bg-gray-300"></div>
-                              <div className="aspect-video h-28 bg-gray-300"></div>
-                              <div className="aspect-video h-28 bg-gray-300"></div>
-                            </div>
+
                           </div>
 
                         </SheetDescription>
