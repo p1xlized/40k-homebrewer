@@ -109,9 +109,6 @@ const CommunityPublicChapters = () => {
     <>
       <div className="grid auto-rows-min gap-4 md:grid-cols-3 mt-2 mx-4 p-1">
         <div className="rounded-xl ">
-          <div className="grid w-full max-w-sm h- items-center ">
-            <Input type="text" id="search" placeholder="Search by name" className="h-10 w-full"/>
-          </div>
         </div>
         <div className="rounded-xl flex align-center justify-center">
           <TagGroup className="flex p-2 space-y-1 align-center justify-center" selectionMode="multiple">
@@ -126,7 +123,7 @@ const CommunityPublicChapters = () => {
           </TagGroup>
         </div>
         <div className="rounded-xl ">
-          <Select value={selectedItem} onValueChange={setSelectedItem}>
+          <Select value={selectedItem } onValueChange={setSelectedItem}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select a Gene Seed" />
             </SelectTrigger>

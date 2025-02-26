@@ -18,6 +18,7 @@ const MarineCard: React.FC<MarineCardProps> = ({ onClick, role, icon, classified
         }
     };
 
+
     return (
         <div
             className={`relative flex flex-col justify-between ${bgClass} ${classified && "border border-muted "} rounded-xl h-full p-2 cursor-pointer overflow-hidden`}

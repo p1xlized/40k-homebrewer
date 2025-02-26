@@ -51,7 +51,7 @@ const AppLayout = () => {
             <div className="grid auto-rows-min gap-2 md:grid-cols-3">
                 <div className="flex justify-start items-center " >
                     <Avatar onClick={() => navigate({ to: `/app/profile/${currentUser.id}` })}>
-                        <AvatarImage src={user.picture_url} className="h-8 w-8 rounded-full" />
+                        <AvatarImage src={user.picture_url ? user.picture_url : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZw4HYx8PHlE8ZniW1hqck5nZeKaYZSqG56g&s"} className="h-8 w-8 rounded-full" />
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                     <p className="leading-7 [&:not(:first-child)]:ml-4">{user.username}</p>

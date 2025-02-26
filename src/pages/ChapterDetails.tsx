@@ -2,8 +2,7 @@ import { useNavigate, useParams } from "@tanstack/react-router";
 import { supabase } from "../config/api";
 import { useEffect, useState } from "react";
 import Loader from "../assets/ressources/loader.gif";
-import { Badge } from "../components/ui/badge";
-import { CalendarRange, Dna, Eclipse, Edit2, } from "lucide-react";
+import { Edit2, Eye, EyeOff } from "lucide-react";
 import { Shield, Cross, Star, Cog, ShieldPlus, Book, Sword, Home } from "lucide-react";
 import MarineCard from "../components/marine-card";
 import DetailsInfo from "../components/datails-info";
@@ -32,17 +31,19 @@ const ChapterDetails = () => {
     const [chapter, setChapter] = useState<Chapter | null>(null);
     const [loading, setLoading] = useState(true);
     const [editMode, setEditMode] = useState(false);
+    const [publicChapter, setPublicChapter] = useState(false);
     const navigate = useNavigate()
     const roles = [
         { name: "Base Model", icon: Home, classfied: false },
         { name: "Chapter Master", icon: Shield, classfied: true },
-        { name: "Chaplain", icon: Cross, classfied: true  },
-        { name: "Veteran", icon: Star, classfied: true  },
-        { name: "Techmarine", icon: Cog, classfied: true  },
-        { name: "Apothecary", icon: ShieldPlus, classfied: true  },
-        { name: "Librarian", icon: Book, classfied: true  },
-        { name: "Captain", icon: Sword, classfied: true  },
+        { name: "Chaplain", icon: Cross, classfied: true },
+        { name: "Veteran", icon: Star, classfied: true },
+        { name: "Techmarine", icon: Cog, classfied: true },
+        { name: "Apothecary", icon: ShieldPlus, classfied: true },
+        { name: "Librarian", icon: Book, classfied: true },
+        { name: "Captain", icon: Sword, classfied: true },
     ];
+
     async function fetchChapterData() {
         try {
             const { data, error } = await supabase
@@ -61,16 +62,18 @@ const ChapterDetails = () => {
             setLoading(false);
         }
     }
-
+    async function editModeChanger() {
+        setEditMode(!editMode)
+    }
     useEffect(() => {
         if (params.id) {
             setTimeout(() => {
                 fetchChapterData();
+
             }, 3000);
         }
-    }, [params.id]);
-    console.log(chapter)
-    console.log(user)
+    }, [chapter]);
+
 
     if (loading) {
         return (
@@ -83,21 +86,49 @@ const ChapterDetails = () => {
     if (!chapter) {
         return <div>Error loading chapter data.</div>;
     }
+    console.log(chapter)
+    async function makePublic() {
+        setPublicChapter(!chapter.public || false)
+        try {
+            const { error } = await supabase
+                .from("chapters")
+                .update({ public: publicChapter })
+                .eq("chapter_id", params.id);
+
+        }
+        catch {
+            console.error("Error updating chapter:", Error);
+        }
+    }
 
     return (
 
         <div className="flex p-4 h-screen">
             <div className="relative w-1/4 min-w-[40vh] h-full bg-background rounded-xl p-4">
-               {chapter.user_id === user.id && (    
-                <Button
-                    variant="outline"
-                    size="icon"
-                    className="absolute top-2 right-2 z-10"
-                    onClick={() => setEditMode(!editMode)}
-                >
-                    <Edit2 />
-                </Button>
-               )}
+                {chapter.user_id === user.id && (
+                    <>
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            className="absolute top-2 right-2 z-10"
+                            onClick={() => setEditMode(!editMode)}
+                        >
+                            <Edit2 />
+                        </Button>
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            className="absolute top-2 right-12 z-10"
+                            onClick={() => makePublic()}
+                        >
+                            {chapter.public ? (
+                                <EyeOff />
+                            ) : (
+                                <Eye />
+                            )}
+                        </Button>
+                    </>
+                )}
 
                 {/* Content below the button */}
                 {editMode ? (
@@ -109,6 +140,7 @@ const ChapterDetails = () => {
                         name={chapter.name}
                         lore={chapter.lore}
                         chapter_id={params.id}
+                        editMode={editModeChanger}
                     />
                 ) : (
                     <DetailsInfo
@@ -124,7 +156,8 @@ const ChapterDetails = () => {
 
             <div className="flex-1 h-full w-[75%] aspect-video rounded-xl bg-background ml-4">
 
-                <div className="grid gap-4 m-4 h-[96%] w-[97.5%] mr-4 grid-cols-2 md:grid-cols-4 auto-rows-[1fr]">
+                <div className="grid gap-4 m-4 h-[96%] w-[97.5%] mr-4 grid-cols- md:grid-cols-4 auto-rows-[1fr]">
+
                     {roles.map((role, index) => (
                         <MarineCard key={index} role={role.name} icon={<role.icon size={16} />} onClick={() => navigate({ to: `/app/editor/${params.id}` })} classified={role.classfied} />
                     ))}

@@ -4,21 +4,9 @@ import { Input } from "../components/ui/input";
 import { Pencil, Check, X, Settings2 } from "lucide-react";
 import { supabase } from "../config/api";
 import Imperium from "../assets/ressources/imperium.jpg";
-import Chaos from "../assets/ressources/chaos.jpg";
 import { PinnedChapter } from "../components/pinned-chapter-card";
 import { useParams } from "@tanstack/react-router";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../components/ui/dialog";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../components/ui/sheet";
-import { Badge } from "../components/ui/badge";
 
 interface UserProfile {
   auth_id: string;
@@ -104,7 +92,7 @@ function Profile() {
 
   useState(() => {
     fetchProfiles();
-  }, [id]);
+  }, [pinned]);
 
   if (!data) {
     return <div className="min-h-screen flex justify-center items-center">Loading...</div>;
@@ -211,7 +199,7 @@ function Profile() {
                 return (
                   <div key={slot}>
                     {item ? (
-                      <PinnedChapter name={item.chapters.name} chapter_barge={item.chapters.chapter_barge} />
+                      <PinnedChapter name={item.chapters.name} chapter_barge={item.chapters.chapter_barge} chapter_id={item.chapters.chapter_id} />
                     ) : (
                       <PinnedChapter />
                     )}

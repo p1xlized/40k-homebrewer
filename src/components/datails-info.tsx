@@ -21,25 +21,26 @@ const DetailsInfo = ({ chapterBarge, founding, homeworld, geneSeed, name, lore }
                         className="w-48 h-48 object-cover rounded-full"
                     />
                 </div>
-                <div className="aspect-video rounded-xl">
+                <div className="aspect-video rounded-xl mt-6">
                     <h4 className="text-xl font-bold mt-2">{name}</h4>
+                    <div className="mt-2">
+
+                        <Badge className="w-full mb-2">
+                            <CalendarRange size={16} />
+                            {founding}
+                        </Badge>
+                        <Badge className="w-full mb-2">
+                            <Eclipse size={16} />
+                            {homeworld}
+                        </Badge>
+                        <Badge className="w-full mb-2">
+                            <Dna size={16} />
+                            {geneSeed}
+                        </Badge>
+                    </div>
                 </div>
             </div>
 
-            <div className="grid auto-rows-min gap-4 md:grid-cols-3 mt-4">
-                <Badge className="gap-1 h-8">
-                    <CalendarRange size={16} />
-                    {founding}
-                </Badge>
-                <Badge className="gap-1">
-                    <Eclipse size={16} />
-                    {homeworld}
-                </Badge>
-                <Badge className="gap-1">
-                    <Dna size={16} />
-                    {geneSeed}
-                </Badge>
-            </div>
 
             {lore && (
                 <>
