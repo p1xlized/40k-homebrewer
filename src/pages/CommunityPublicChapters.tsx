@@ -4,6 +4,18 @@ import { supabase } from '../config/api';
 import { useNavigate } from '@tanstack/react-router';
 import Loader from "../assets/ressources/loader.gif";
 import { Tag, TagGroup, TagList } from "../components/ui/tag-group"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select"
+import { Separator } from '../components/ui/separator';
+import { Label } from '../components/ui/label';
+import { Input } from '../components/ui/input';
 
 
 interface Chapter {
@@ -24,37 +36,59 @@ interface Chapter {
 
 const CommunityPublicChapters = () => {
   const [chapters, setChapters] = useState<Chapter[]>([]);
+  const [geneSeed, setGeneSeed] = useState<string[]>([]);
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true);
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
+  async function fetchGeneSeed() {
+    try {
+      const { data, error } = await supabase.rpc("get_gene_seed_enum");
+
+      if (error) console.error("Error:", error);
+      setGeneSeed(data);
+    }
+    catch (error) {
+      console.error("Error fetching gene seed:", error);
+    }
+  }
   async function fetchPublicChapters() {
     try {
-      const { data, error } = await supabase
+      const response = await supabase
         .from("chapters")
         .select(`
           *,
           user:profiles(username, picture_url)`)
         .eq("public", true)
-        .order("created_at", { ascending: false })
+        .order("created_at", { ascending: false });
 
+      const { data, error } = response;
 
-      if (error) throw error;
+      if (error) throw error; // Handle any errors
 
-      setChapters(data);
+      let filteredData = data;
+
+      if (selectedItem != null) {
+        // Filter chapters by selected gene seed
+        filteredData = data.filter(chapter => chapter.gene_seed === selectedItem);
+      }
+
+      setChapters(filteredData);
+
     } catch (error) {
       console.error("Error fetching chapters:", error);
-      return [];
-    }
-    finally {
+      setChapters([]); // Set empty chapters in case of error
+    } finally {
       setLoading(false);
     }
-
   }
+
   useEffect(() => {
     setTimeout(() => {
       fetchPublicChapters()
+      fetchGeneSeed()
     }, 3000);
-  }, [])
+  }, [selectedItem])
 
   if (loading) {
     return (
@@ -68,45 +102,69 @@ const CommunityPublicChapters = () => {
     return <div>Error loading chapter data.</div>;
   }
 
-  console.log(chapters)
+  console.log(geneSeed)
+  console.log(selectedItem)
+
   return (
     <>
-      <div className="grid auto-rows-min gap-4 md:grid-cols-3 mt-2">
-        <div className="rounded-xl "></div>
-        <div className="rounded-xl  flex align-center justify-center">
-          <TagGroup className="space-y-1" selectionMode="multiple">
+      <div className="grid auto-rows-min gap-4 md:grid-cols-3 mt-2 mx-4 p-1">
+        <div className="rounded-xl ">
+          <div className="grid w-full max-w-sm h- items-center ">
+            <Input type="text" id="search" placeholder="Search by name" className="h-10 w-full"/>
+          </div>
+        </div>
+        <div className="rounded-xl flex align-center justify-center">
+          <TagGroup className="flex p-2 space-y-1 align-center justify-center" selectionMode="multiple">
             <TagList>
-              <Tag>News</Tag>
-              <Tag>Travel</Tag>
-              <Tag>Gaming</Tag>
-              <Tag>Shopping</Tag>
+              <Tag>Space Marine</Tag>
+              <Tag>Chaos Marines</Tag>
+              <Tag>Eldars</Tag>
+              <Tag>Tyranids</Tag>
+              <Tag>Tau</Tag>
+              <Tag>Necrons</Tag>
             </TagList>
           </TagGroup>
         </div>
-        <div className="rounded-xl "></div>
+        <div className="rounded-xl ">
+          <Select value={selectedItem} onValueChange={setSelectedItem}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a Gene Seed" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Gene Seed</SelectLabel>
+                <SelectItem value={null}>All</SelectItem>
+                {geneSeed.map((seed) => (
+                  <SelectItem key={seed} value={seed}>
+                    {seed}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+
       </div>
-      <div className="flex w-full items-center rounded-full mx-4">
-        <div className="flex-1 border-b border-text"></div>
-        <span className="text-white text-lg font-semibold leading-8 px-8 py-3">Notification</span>
-        <div className="flex-1 border-b bborder-text ml-2"></div>
-        </div>
-        <div className="grid grid-cols-4 gap-4 p-4 m-2 justify-items-center">
+      <div className="mx-4">
 
-          {chapters.map((chapter: any) => (
-            <ChapterCardRework
-              image_url={chapter.chapter_barge}
-              name={chapter.name}
-              gene_seed={chapter.gene_seed}
-              user_name={chapter.user.username}
-              picture_url={chapter.user.picture_url}
-              key={chapter.chapter_id}
-              onClick={() => navigate({ to: `/app/chapters/${chapter.chapter_id}` })} />
-          ))}
-        </div>
+        <Separator />
+      </div>
+      <div className="grid grid-cols-4 gap-4 p-4 m-2 justify-items-center">
 
-      </>
+        {chapters.map((chapter: any) => (
+          <ChapterCardRework
+            image_url={chapter.chapter_barge}
+            name={chapter.name}
+            gene_seed={chapter.gene_seed}
+            user_name={chapter.user.username}
+            picture_url={chapter.user.picture_url}
+            key={chapter.chapter_id}
+            onClick={() => navigate({ to: `/app/chapters/${chapter.chapter_id}` })} />
+        ))}
+      </div>
+    </>
 
-      )
+  )
 }
 
-      export default CommunityPublicChapters
+export default CommunityPublicChapters

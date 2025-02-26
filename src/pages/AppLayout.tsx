@@ -6,9 +6,9 @@ import { useAuth } from '../lib/contexts/AuthContext';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '../components/ui/sheet';
 import { ChapterForm } from '../components/chapter-form';
 import { Button } from '../components/ui/button';
-import { CirclePlus, LogOut, Settings } from 'lucide-react';
+import { CirclePlus, Settings } from 'lucide-react';
 import { supabase } from '../config/api';
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
 
 const AppLayout = () => {
     const { user, logout } = useAuth();
@@ -61,12 +61,12 @@ const AppLayout = () => {
                         <NavigationMenuList>
                             <NavigationMenuItem>
                                 <NavigationMenuLink className={navigationMenuTriggerStyle()} onClick={() => navigate({ to: `/app/chapters` })}>
-                                    Manufactorum
+                                    My Creation
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
                             <NavigationMenuItem>
                                 <NavigationMenuLink className={navigationMenuTriggerStyle()} onClick={() => navigate({ to: `/app` })}>
-                                    Inquisition
+                                    All Creations
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
                         </NavigationMenuList>

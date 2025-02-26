@@ -108,6 +108,7 @@ const ChapterDetails = () => {
                         geneSeed={chapter.gene_seed}
                         name={chapter.name}
                         lore={chapter.lore}
+                        chapter_id={params.id}
                     />
                 ) : (
                     <DetailsInfo
