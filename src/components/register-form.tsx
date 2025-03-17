@@ -22,19 +22,18 @@ export function RegisterForm({
 
   async function handleRegister() {
     try {
-      // Sign up the user
       const { data, error: signUpError } = await supabase.auth.signUp({
         email: email,
         password: password
       });
 
-      if (signUpError) throw signUpError; // Handle sign-up errors
+      if (signUpError) throw signUpError; 
 
-      // Insert into the "profiles" table
       const { error: profileInsertError } = await supabase.from("profiles").insert({
         auth_id: data.user!.id!,
         username: username,
         favorite_faction: selectedGif
+
       });
 
       if (profileInsertError) throw profileInsertError; // Handle profile insertion errors
